@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/usuarioLogado")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class TesteTokenController {
+public class UsuarioLogadoController {
 
     private final PortalService portalService;
 
