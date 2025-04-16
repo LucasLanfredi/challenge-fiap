@@ -16,9 +16,11 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         SecurityScheme bearerAuthScheme = new SecurityScheme()
                 .name("Authorization")
-                .type(SecurityScheme.Type.APIKEY)
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
                 .in(SecurityScheme.In.HEADER)
-                .description("Bearer Token");
+                .description("Insira somente o token JWT, o prefixo 'Bearer ' será adicionado automaticamente.");
 
         Components components = new Components()
                 .addSecuritySchemes("Bearer Authentication", bearerAuthScheme);
