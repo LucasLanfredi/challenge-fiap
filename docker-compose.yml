@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/database
+      DATABASE_USERNAME: usuario
+      DATABASE_PASSWORD: senha123
+      DATABASE_DRIVER_CLASS_NAME: org.hibernate.dialect.PostgreSQLDialect
+    depends_on:
+      db:
+        # A condição é para iniciar a máquina é o healthcheck do banco.
+        condition: service_healthy
+    networks:
+      - fiap_network
+
+  db:
+    image: postgres:16.8-alpine3.20
+    container_name: postgres-fiap
+    environment:
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: senha123
+      POSTGRES_DB: database
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    # Para ter certeza que o banco está pronto para receber uma nova conexão.
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-d", "database", "-U", "usuario" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5432:5432"
+    networks:
+      - fiap_network
+
+networks:
+  fiap_network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+
