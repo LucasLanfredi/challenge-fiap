@@ -11,10 +11,11 @@ services:
       DATABASE_URL: jdbc:postgresql://db:5432/database
       DATABASE_USERNAME: usuario
       DATABASE_PASSWORD: senha123
-      DATABASE_DRIVER_CLASS_NAME: org.hibernate.dialect.PostgreSQLDialect
+      DATABASE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      DATABASE_PLATAFORM: org.hibernate.dialect.PostgreSQLDialect
     depends_on:
       db:
-        # A condição é para iniciar a máquina é o healthcheck do banco.
+        # A condição para iniciar a máquina é o healthcheck do banco.
         condition: service_healthy
     networks:
       - fiap_network
