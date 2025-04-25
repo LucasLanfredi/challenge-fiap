@@ -7,7 +7,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario {
 
     @Id

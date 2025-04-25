@@ -20,9 +20,9 @@ public class DeletarUsuarioService {
 
     public ResponseEntity<?> deletar(HttpServletRequest request) throws AuthException {
 
-        UsuarioLogado usuarioLogado = autenticacaoService.getUsuarioLogado(request);
+        final UsuarioLogado usuarioLogado = autenticacaoService.getUsuarioLogado(request);
 
-        Usuario usuario = usuarioRepository.findById(usuarioLogado.getId())
+        final Usuario usuario = usuarioRepository.findById(usuarioLogado.getId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         usuarioRepository.delete(usuario);
