@@ -2,11 +2,9 @@ package br.com.fiap.TechChallenger.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 @Builder
 public class UsuarioLogado {

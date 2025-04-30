@@ -22,20 +22,23 @@ public class EditarUsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final AutenticacaoService autenticacaoService;
 
-    public ResponseEntity<?> editar(@Valid UsuarioEditDTO editarUsuarioRequest, HttpServletRequest request) throws AuthException {
+    public ResponseEntity<?> editar(@Valid final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
 
-        UsuarioLogado usuarioLogado = autenticacaoService.getUsuarioLogado(request);
-
-        Usuario usuario = usuarioRepository.findById(usuarioLogado.getId())
+        final UsuarioLogado usuarioLogado = autenticacaoService.getUsuarioLogado(request);
+        final Usuario usuario = usuarioRepository.findById(usuarioLogado.getId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        usuario.setNome(editarUsuarioRequest.getNome());
-        usuario.setEmail(editarUsuarioRequest.getEmail());
-        usuario.setLogin(editarUsuarioRequest.getLogin());
-        usuario.setEndereco(editarUsuarioRequest.getEndereco());
-        usuario.setDataUltimaAlteracao(LocalDateTime.now());
+        final Usuario usuarioEditado = Usuario.builder()
+                .id(usuario.getId())
+                .nome(editarUsuarioRequest.getNome())
+                .email(editarUsuarioRequest.getEmail())
+                .login(editarUsuarioRequest.getLogin())
+                .dataUltimaAlteracao(LocalDateTime.now())
+                .endereco(editarUsuarioRequest.getEndereco())
+                .tipoUsuario(editarUsuarioRequest.getTipoUsuario())
+                .build();
 
-        final var idUsuario = usuarioRepository.save(usuario).getId();
+        final var idUsuario = usuarioRepository.save(usuarioEditado).getId();
 
         return ResponseEntity.status(HttpStatus.OK).body("Usuario editado com sucesso! ID: " + idUsuario.toString());
     }

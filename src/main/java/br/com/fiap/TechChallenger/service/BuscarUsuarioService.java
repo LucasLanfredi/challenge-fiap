@@ -16,8 +16,7 @@ public class BuscarUsuarioService {
 
     public ResponseEntity<UsuarioLogado> buscar(HttpServletRequest request) {
         try {
-            UsuarioLogado usuarioLogado = autenticacaoService.getUsuarioLogado(request);
-            return ResponseEntity.ok(usuarioLogado);
+            return ResponseEntity.ok(autenticacaoService.getUsuarioLogado(request));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -4,10 +4,10 @@ import jakarta.persistence.Embeddable;
 import lombok.*;
 
 @Embeddable
-@Data
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class Endereco {
     private String rua;
     private String numero;

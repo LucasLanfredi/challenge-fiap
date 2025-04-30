@@ -21,20 +21,17 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final CriarUsuarioService criarUsuarioService;
-
     private final EditarUsuarioService editarUsuarioService;
-
     private final DeletarUsuarioService deletarUsuarioService;
-
     private final BuscarUsuarioService buscarUsuarioService;
 
     @PostMapping("/criar")
-    public ResponseEntity<?> criarUsuario(@Valid @RequestBody UsuarioDTO criarUsuarioRequest) {
+    public ResponseEntity<?> criarUsuario(@Valid @RequestBody final UsuarioDTO criarUsuarioRequest) {
         return criarUsuarioService.criar(criarUsuarioRequest);
     }
 
     @PutMapping("/editar")
-    public ResponseEntity<?> editarUsuario(@Valid @RequestBody UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
+    public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
          return editarUsuarioService.editar(editarUsuarioRequest, request);
     }
 
