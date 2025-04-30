@@ -7,8 +7,8 @@ COPY pom.xml .
 RUN mvn dependency:go-offline -B
 # Copia o restante do código-fonte
 COPY src ./src
-# Realiza o build da aplicação (pulando os testes, se desejar)
-RUN mvn clean package -DskipTests
+# Realiza o build da aplicação
+RUN mvn clean package
 
 # Stage 2: Cria a imagem final utilizando Java 21 para execução
 FROM openjdk:21-slim-buster

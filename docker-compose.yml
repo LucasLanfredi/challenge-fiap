@@ -13,6 +13,7 @@ services:
       DATABASE_PASSWORD: senha123
       DATABASE_DRIVER_CLASS_NAME: org.postgresql.Driver
       DATABASE_PLATAFORM: org.hibernate.dialect.PostgreSQLDialect
+      SECRET_KEY: MinhaChaveSecretaSuperSegura123!
     depends_on:
       db:
         # A condição para iniciar a máquina é o healthcheck do banco.
