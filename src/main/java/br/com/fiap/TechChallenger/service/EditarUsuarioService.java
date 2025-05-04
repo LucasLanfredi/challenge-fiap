@@ -2,6 +2,7 @@ package br.com.fiap.TechChallenger.service;
 
 import br.com.fiap.TechChallenger.dto.UsuarioEditDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioLogado;
+import br.com.fiap.TechChallenger.entity.Endereco;
 import br.com.fiap.TechChallenger.entity.Usuario;
 import br.com.fiap.TechChallenger.repository.UsuarioRepository;
 import br.com.fiap.TechChallenger.security.AutenticacaoService;
@@ -34,7 +35,16 @@ public class EditarUsuarioService {
                 .email(editarUsuarioRequest.getEmail())
                 .login(editarUsuarioRequest.getLogin())
                 .dataUltimaAlteracao(LocalDateTime.now())
-                .endereco(editarUsuarioRequest.getEndereco())
+                .endereco(editarUsuarioRequest.getEndereco().stream()
+                        .map(enderecoDTO -> Endereco.builder()
+                                .rua(enderecoDTO.getRua())
+                                .numero(enderecoDTO.getNumero())
+                                .cidade(enderecoDTO.getCidade())
+                                .estado(enderecoDTO.getEstado())
+                                .cep(enderecoDTO.getCep())
+                                .usuario(usuario)
+                                .build())
+                        .toList())
                 .tipoUsuario(editarUsuarioRequest.getTipoUsuario())
                 .build();
 
