@@ -4,7 +4,7 @@ WORKDIR /app
 # Copia o arquivo de configuração do Maven
 COPY pom.xml .
 # Faz o download das dependências para cache
-RUN mvn dependency:go-offline -B
+RUN mvn dependency:go-offline -B -Pdocker
 # Copia o restante do código-fonte
 COPY src ./src
 # Realiza o build da aplicação
