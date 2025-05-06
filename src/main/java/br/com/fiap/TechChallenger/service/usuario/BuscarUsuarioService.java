@@ -1,4 +1,4 @@
-package br.com.fiap.TechChallenger.service;
+package br.com.fiap.TechChallenger.service.usuario;
 
 import br.com.fiap.TechChallenger.dto.UsuarioLogado;
 import br.com.fiap.TechChallenger.security.AutenticacaoService;

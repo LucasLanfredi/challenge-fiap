@@ -1,7 +1,7 @@
 package br.com.fiap.TechChallenger.controller;
 
 import br.com.fiap.TechChallenger.dto.LoginRequest;
-import br.com.fiap.TechChallenger.service.AutenticacaoUsuarioService;
+import br.com.fiap.TechChallenger.service.usuario.AutenticacaoUsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
