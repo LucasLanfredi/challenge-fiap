@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,8 +31,8 @@ public class Usuario {
 
     private LocalDateTime dataUltimaAlteracao;
 
-    @Embedded
-    private Endereco endereco;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Endereco> endereco;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;

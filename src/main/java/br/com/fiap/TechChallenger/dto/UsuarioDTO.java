@@ -1,8 +1,9 @@
 package br.com.fiap.TechChallenger.dto;
 
-import br.com.fiap.TechChallenger.entity.Endereco;
 import br.com.fiap.TechChallenger.model.TipoUsuario;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class UsuarioDTO {
@@ -10,6 +11,6 @@ public class UsuarioDTO {
     private String email;
     private String login;
     private String senha;
-    private Endereco endereco;
+    private List<EnderecoDTO> endereco;
     private TipoUsuario tipoUsuario;
 }

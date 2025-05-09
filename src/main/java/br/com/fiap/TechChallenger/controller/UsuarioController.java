@@ -1,12 +1,11 @@
 package br.com.fiap.TechChallenger.controller;
 
+import br.com.fiap.TechChallenger.dto.TrocaSenhaDto;
 import br.com.fiap.TechChallenger.dto.UsuarioDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioEditDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioLogado;
-import br.com.fiap.TechChallenger.service.BuscarUsuarioService;
-import br.com.fiap.TechChallenger.service.CriarUsuarioService;
-import br.com.fiap.TechChallenger.service.DeletarUsuarioService;
-import br.com.fiap.TechChallenger.service.EditarUsuarioService;
+import br.com.fiap.TechChallenger.service.exception.SenhaInvalidaException;
+import br.com.fiap.TechChallenger.service.usuario.*;
 import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,6 +23,7 @@ public class UsuarioController {
     private final EditarUsuarioService editarUsuarioService;
     private final DeletarUsuarioService deletarUsuarioService;
     private final BuscarUsuarioService buscarUsuarioService;
+    private final TrocarSenhaService trocarSenhaService;
 
     @PostMapping("/criar")
     public ResponseEntity<?> criarUsuario(@Valid @RequestBody final UsuarioDTO criarUsuarioRequest) {
@@ -44,6 +44,11 @@ public class UsuarioController {
 //    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')") <- Configurar para começar a usar TODO
     public ResponseEntity<UsuarioLogado> buscarUsuarioLogado(final HttpServletRequest request) {
         return buscarUsuarioService.buscar(request);
+    }
+
+    @PutMapping("/troca/senha")
+    public ResponseEntity<?> trocarSenha(@Valid @RequestBody final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
+        return trocarSenhaService.execute(trocaSenhaDto);
     }
 
 }
