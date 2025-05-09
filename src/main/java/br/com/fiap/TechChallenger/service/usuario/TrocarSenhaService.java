@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,13 +18,14 @@ import java.time.LocalDateTime;
 public class TrocarSenhaService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> execute(final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
 
         final Usuario usuario = usuarioRepository.findByLogin(trocaSenhaDto.getLogin())
                 .orElseThrow(() -> new UsernameNotFoundException(trocaSenhaDto.getLogin()));
 
-        if(trocaSenhaDto.getSenhaAtual().equals(usuario.getSenha())) {
+        if(passwordEncoder.matches(trocaSenhaDto.getSenhaAtual(),usuario.getSenha())) {
             alteraSenha(usuario, trocaSenhaDto);
         } else throw new SenhaInvalidaException("A senha atual digitada não confere com a senha atual cadastrada!");
 
@@ -36,7 +38,7 @@ public class TrocarSenhaService {
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
                 .login(usuario.getLogin())
-                .senha(trocaSenhaDto.getNovaSenha())
+                .senha(passwordEncoder.encode(trocaSenhaDto.getNovaSenha()))
                 .dataUltimaAlteracao(LocalDateTime.now())
                 .endereco(usuario.getEndereco())
                 .tipoUsuario(usuario.getTipoUsuario())
