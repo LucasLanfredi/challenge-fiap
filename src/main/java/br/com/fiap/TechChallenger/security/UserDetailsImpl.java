@@ -33,9 +33,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(Usuario usuario) {
-        String role = usuario.getTipoUsuario().equals(TipoUsuario.DONO_RESTAURANTE)
-                ? "ROLE_RESTAURANTE"
-                : "ROLE_USER";
+        String role = String.valueOf(usuario.getTipoUsuario());
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
         return new UserDetailsImpl(
                 usuario.getId(),

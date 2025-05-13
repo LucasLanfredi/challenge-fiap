@@ -25,7 +25,8 @@ public class BuscarEnderecoService {
     public ResponseEntity<List<Endereco>> buscarEnderecos(HttpServletRequest request) {
         try {
             final UsuarioLogado usuariologado = autenticacaoService.getUsuarioLogado(request);
-            final Usuario usuarioEntity = usuarioRepository.getUsuarioById(usuariologado.getId());
+            final Usuario usuarioEntity = usuarioRepository.findById(usuariologado.getId())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
             return ResponseEntity.ok(enderecoRepository.getEnderecosByUsuario(usuarioEntity));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

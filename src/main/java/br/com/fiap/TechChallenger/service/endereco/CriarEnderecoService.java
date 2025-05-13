@@ -1,8 +1,6 @@
 package br.com.fiap.TechChallenger.service.endereco;
 
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
-import br.com.fiap.TechChallenger.dto.MessageResponse;
-import br.com.fiap.TechChallenger.dto.UsuarioDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioLogado;
 import br.com.fiap.TechChallenger.entity.Endereco;
 import br.com.fiap.TechChallenger.entity.Usuario;
@@ -14,11 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +25,8 @@ public class CriarEnderecoService {
     public ResponseEntity<?> criarEnderecos(@Valid EnderecoDTO criarEnderecoRequest, HttpServletRequest request) {
         try {
             final UsuarioLogado usuariologado = autenticacaoService.getUsuarioLogado(request);
-            final Usuario usuarioEntity = usuarioRepository.getUsuarioById(usuariologado.getId());
+            final Usuario usuarioEntity = usuarioRepository.findById(usuariologado.getId())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
             final Endereco enderecoEntity = Endereco.builder()
                     .numero(criarEnderecoRequest.getNumero())

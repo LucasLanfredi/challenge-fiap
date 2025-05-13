@@ -25,7 +25,8 @@ public class EditarEnderecoService {
     public ResponseEntity<?> editarEnderecos(@Valid EnderecoEditDTO editarEnderecoRequest, HttpServletRequest request) {
         try {
             final UsuarioLogado usuariologado = autenticacaoService.getUsuarioLogado(request);
-            final Usuario usuarioEntity = usuarioRepository.getUsuarioById(usuariologado.getId());
+            final Usuario usuarioEntity = usuarioRepository.findById(usuariologado.getId())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
             final Endereco enderecoEntityAlterado = Endereco.builder()
                     .id(editarEnderecoRequest.getId())

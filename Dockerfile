@@ -11,7 +11,8 @@ COPY src ./src
 RUN mvn clean package
 
 # Stage 2: Cria a imagem final utilizando Java 21 para execução
-FROM openjdk:21-slim-buster
+FROM eclipse-temurin:21.0.7_6-jre-noble
+#FROM openjdk:21-slim-buster
 WORKDIR /app
 # Copia o jar gerado no stage de build
 COPY --from=build /app/target/*.jar app.jar
