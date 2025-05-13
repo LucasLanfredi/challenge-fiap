@@ -1,0 +1,54 @@
+package br.com.fiap.TechChallenger.gateways.controllers;
+
+import br.com.fiap.TechChallenger.domains.dto.TrocaSenhaDto;
+import br.com.fiap.TechChallenger.domains.dto.UsuarioDTO;
+import br.com.fiap.TechChallenger.domains.dto.UsuarioEditDTO;
+import br.com.fiap.TechChallenger.domains.entity.UsuarioLogado;
+import br.com.fiap.TechChallenger.usecases.exception.SenhaInvalidaException;
+import br.com.fiap.TechChallenger.usecases.usuario.*;
+import jakarta.security.auth.message.AuthException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/usuario")
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
+public class UsuarioController {
+
+    private final CriarUsuarioService criarUsuarioService;
+    private final EditarUsuarioService editarUsuarioService;
+    private final DeletarUsuarioService deletarUsuarioService;
+    private final BuscarUsuarioService buscarUsuarioService;
+    private final TrocarSenhaService trocarSenhaService;
+
+    @PostMapping("/criar")
+    public ResponseEntity<?> criarUsuario(@Valid @RequestBody final UsuarioDTO criarUsuarioRequest) {
+        return criarUsuarioService.criar(criarUsuarioRequest);
+    }
+
+    @PutMapping("/editar")
+    public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
+         return editarUsuarioService.editar(editarUsuarioRequest, request);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteUsuario(final HttpServletRequest request) throws AuthException {
+        return deletarUsuarioService.deletar(request);
+    }
+
+    @GetMapping("/logado")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')") <- Configurar para começar a usar TODO
+    public ResponseEntity<UsuarioLogado> buscarUsuarioLogado(final HttpServletRequest request) {
+        return buscarUsuarioService.buscar(request);
+    }
+
+    @PutMapping("/troca/senha")
+    public ResponseEntity<?> trocarSenha(@Valid @RequestBody final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
+        return trocarSenhaService.execute(trocaSenhaDto);
+    }
+
+}
