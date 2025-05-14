@@ -1,9 +1,8 @@
-package br.com.fiap.TechChallenger.controller;
+package br.com.fiap.TechChallenger.controller.logado;
 
 import br.com.fiap.TechChallenger.dto.TrocaSenhaDto;
-import br.com.fiap.TechChallenger.dto.UsuarioDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioEditDTO;
-import br.com.fiap.TechChallenger.dto.UsuarioLogado;
+import br.com.fiap.TechChallenger.dto.response.UsuarioResponse;
 import br.com.fiap.TechChallenger.service.exception.SenhaInvalidaException;
 import br.com.fiap.TechChallenger.service.usuario.*;
 import jakarta.security.auth.message.AuthException;
@@ -14,23 +13,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarioLogado")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class UsuarioLogadoController {
 
-    private final CriarUsuarioService criarUsuarioService;
     private final EditarUsuarioService editarUsuarioService;
     private final DeletarUsuarioService deletarUsuarioService;
     private final BuscarUsuarioService buscarUsuarioService;
     private final TrocarSenhaService trocarSenhaService;
 
-    @PostMapping("/criar")
-    public ResponseEntity<?> criarUsuario(@Valid @RequestBody final UsuarioDTO criarUsuarioRequest) {
-        return criarUsuarioService.criar(criarUsuarioRequest);
-    }
-
-    @PutMapping("/editar")
+    @PutMapping()
     public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
          return editarUsuarioService.editar(editarUsuarioRequest, request);
     }
@@ -40,13 +33,12 @@ public class UsuarioController {
         return deletarUsuarioService.deletar(request);
     }
 
-    @GetMapping("/logado")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')") <- Configurar para começar a usar TODO
-    public ResponseEntity<UsuarioLogado> buscarUsuarioLogado(final HttpServletRequest request) {
+    @GetMapping()
+    public ResponseEntity<UsuarioResponse> buscarUsuarioLogado(final HttpServletRequest request) {
         return buscarUsuarioService.buscar(request);
     }
 
-    @PutMapping("/troca/senha")
+    @PutMapping("/senha")
     public ResponseEntity<?> trocarSenha(@Valid @RequestBody final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
         return trocarSenhaService.execute(trocaSenhaDto);
     }

@@ -2,6 +2,7 @@ package br.com.fiap.TechChallenger.service.endereco;
 
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioLogado;
+import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
 import br.com.fiap.TechChallenger.entity.Endereco;
 import br.com.fiap.TechChallenger.entity.Usuario;
 import br.com.fiap.TechChallenger.repository.EnderecoRepository;
@@ -25,7 +26,15 @@ public class CriarEnderecoService {
     public ResponseEntity<?> criarEnderecos(@Valid EnderecoDTO criarEnderecoRequest, HttpServletRequest request) {
         try {
             final UsuarioLogado usuariologado = autenticacaoService.getUsuarioLogado(request);
-            final Usuario usuarioEntity = usuarioRepository.findById(usuariologado.getId())
+            return criarEnderecosByUserId(criarEnderecoRequest, usuariologado.getId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public ResponseEntity<?> criarEnderecosByUserId(@Valid EnderecoDTO criarEnderecoRequest, Long userId) {
+        try {
+            final Usuario usuarioEntity = usuarioRepository.findById(userId)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
             final Endereco enderecoEntity = Endereco.builder()
@@ -39,9 +48,10 @@ public class CriarEnderecoService {
 
             final Endereco endereco = enderecoRepository.save(enderecoEntity);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
+            return ResponseEntity.status(HttpStatus.CREATED).body(EnderecoResponse.fromEntity(endereco));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 }

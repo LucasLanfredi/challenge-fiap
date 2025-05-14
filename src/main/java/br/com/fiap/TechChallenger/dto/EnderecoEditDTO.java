@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EnderecoEditDTO {
 
-    private Long id;
+    private Long enderecoId;
     private String rua;
     private String numero;
     private String cidade;
