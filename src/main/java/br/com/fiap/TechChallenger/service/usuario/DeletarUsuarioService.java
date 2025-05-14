@@ -19,14 +19,15 @@ public class DeletarUsuarioService {
     private final AutenticacaoService autenticacaoService;
 
     public ResponseEntity<?> deletar(HttpServletRequest request) throws AuthException {
-
         final UsuarioLogado usuarioLogado = autenticacaoService.getUsuarioLogado(request);
+        return deleteUsuarioById(usuarioLogado.getId());
+    }
 
-        final Usuario usuario = usuarioRepository.findById(usuarioLogado.getId())
+    public ResponseEntity<String> deleteUsuarioById(Long id) {
+        final Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         usuarioRepository.delete(usuario);
-
         return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso!");
     }
 }

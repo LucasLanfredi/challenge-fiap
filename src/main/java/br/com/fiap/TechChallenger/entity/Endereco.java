@@ -14,14 +14,19 @@ public class Endereco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private String rua;
 
+    @Setter
     private String numero;
 
+    @Setter
     private String cidade;
 
+    @Setter
     private String estado;
 
+    @Setter
     private String cep;
 
     @ManyToOne

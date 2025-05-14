@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
     List<Endereco> getEnderecosByUsuario(Usuario usuarioEntity);
-    void deleteEnderecoById(Long enderecoId);
 }

@@ -18,10 +18,12 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     private String nome;
 
     @Column(unique = true)
     @Email
+    @Setter
     private String email;
 
     @Column(unique = true)
@@ -29,6 +31,9 @@ public class Usuario {
 
     private String senha;
 
+    private Boolean admin;
+
+    @Setter
     private LocalDateTime dataUltimaAlteracao;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
