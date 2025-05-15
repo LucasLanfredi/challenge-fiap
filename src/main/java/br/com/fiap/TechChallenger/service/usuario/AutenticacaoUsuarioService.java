@@ -19,7 +19,7 @@ public class AutenticacaoUsuarioService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
-    public ResponseEntity<?> autenticar(LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> autenticar(LoginRequest loginRequest) {
 
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getSenha()));
