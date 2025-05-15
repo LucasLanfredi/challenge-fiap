@@ -1,9 +1,11 @@
 package br.com.fiap.TechChallenger.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(description = "Corpo de entrada para autenticação")
 public class LoginRequest {
-    private String login;
-    private String senha;
+    @Schema(description = "Login do usuário") private String login;
+    @Schema(description = "Senha do usuário") private String senha;
 }

@@ -1,5 +1,6 @@
 package br.com.fiap.TechChallenger.controller;
 
+import br.com.fiap.TechChallenger.api.UsuarioApi;
 import br.com.fiap.TechChallenger.dto.TrocaSenhaDto;
 import br.com.fiap.TechChallenger.dto.UsuarioDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioEditDTO;
@@ -14,10 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/usuario")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class UsuarioController implements UsuarioApi {
 
     private final CriarUsuarioService criarUsuarioService;
     private final EditarUsuarioService editarUsuarioService;
@@ -25,28 +25,22 @@ public class UsuarioController {
     private final BuscarUsuarioService buscarUsuarioService;
     private final TrocarSenhaService trocarSenhaService;
 
-    @PostMapping("/criar")
     public ResponseEntity<?> criarUsuario(@Valid @RequestBody final UsuarioDTO criarUsuarioRequest) {
         return criarUsuarioService.criar(criarUsuarioRequest);
     }
 
-    @PutMapping("/editar")
     public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
          return editarUsuarioService.editar(editarUsuarioRequest, request);
     }
 
-    @DeleteMapping
     public ResponseEntity<?> deleteUsuario(final HttpServletRequest request) throws AuthException {
         return deletarUsuarioService.deletar(request);
     }
 
-    @GetMapping("/logado")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')") <- Configurar para começar a usar TODO
     public ResponseEntity<UsuarioLogado> buscarUsuarioLogado(final HttpServletRequest request) {
         return buscarUsuarioService.buscar(request);
     }
 
-    @PutMapping("/troca/senha")
     public ResponseEntity<?> trocarSenha(@Valid @RequestBody final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
         return trocarSenhaService.execute(trocaSenhaDto);
     }
