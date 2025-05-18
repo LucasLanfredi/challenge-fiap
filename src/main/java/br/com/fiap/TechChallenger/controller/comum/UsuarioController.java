@@ -1,16 +1,15 @@
-package br.com.fiap.TechChallenger.controller;
+package br.com.fiap.TechChallenger.controller.comum;
 
 import br.com.fiap.TechChallenger.dto.TrocaSenhaDto;
 import br.com.fiap.TechChallenger.dto.UsuarioDTO;
 import br.com.fiap.TechChallenger.dto.UsuarioEditDTO;
-import br.com.fiap.TechChallenger.dto.UsuarioLogado;
+import br.com.fiap.TechChallenger.dto.response.UsuarioResponse;
 import br.com.fiap.TechChallenger.service.exception.SenhaInvalidaException;
 import br.com.fiap.TechChallenger.service.usuario.*;
-import jakarta.security.auth.message.AuthException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,28 +24,30 @@ public class UsuarioController {
     private final BuscarUsuarioService buscarUsuarioService;
     private final TrocarSenhaService trocarSenhaService;
 
-    @PostMapping("/criar")
+    @PostMapping()
     public ResponseEntity<?> criarUsuario(@Valid @RequestBody final UsuarioDTO criarUsuarioRequest) {
         return criarUsuarioService.criar(criarUsuarioRequest);
     }
 
-    @PutMapping("/editar")
-    public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
-         return editarUsuarioService.editar(editarUsuarioRequest, request);
+    @PutMapping("/userId/{userId}")
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, @PathVariable("userId") Long userId) {
+         return editarUsuarioService.editarUsuarioByUserId(editarUsuarioRequest, userId);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteUsuario(final HttpServletRequest request) throws AuthException {
-        return deletarUsuarioService.deletar(request);
+    @DeleteMapping("/userId/{userId}")
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<?> deleteUsuario(@PathVariable Long userId) {
+        return deletarUsuarioService.deleteUsuarioById(userId);
     }
 
-    @GetMapping("/logado")
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')") <- Configurar para começar a usar TODO
-    public ResponseEntity<UsuarioLogado> buscarUsuarioLogado(final HttpServletRequest request) {
-        return buscarUsuarioService.buscar(request);
+    @GetMapping("/userId/{userId}")
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<UsuarioResponse> buscarUsuarioLogado(@PathVariable("userId") Long userId) {
+        return buscarUsuarioService.getUsuarioResponseById(userId);
     }
 
-    @PutMapping("/troca/senha")
+    @PutMapping("/senha")
     public ResponseEntity<?> trocarSenha(@Valid @RequestBody final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
         return trocarSenhaService.execute(trocaSenhaDto);
     }
