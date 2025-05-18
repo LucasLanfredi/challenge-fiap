@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Representa um endereço do usuário")
 public class EnderecoEditDTO {
     @Schema(description = "Id do endereço")
-    private Long id;
+    private Long enderecoId;
 
     @Schema(description = "Rua", example = "Rua das rosas")
     private String rua;

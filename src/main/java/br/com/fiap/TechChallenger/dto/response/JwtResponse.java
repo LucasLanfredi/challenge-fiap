@@ -1,4 +1,4 @@
-package br.com.fiap.TechChallenger.dto;
+package br.com.fiap.TechChallenger.dto.response;
 
 import br.com.fiap.TechChallenger.model.TipoUsuario;
 import io.swagger.v3.oas.annotations.media.Schema;

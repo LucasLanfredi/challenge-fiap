@@ -1,9 +1,9 @@
-package br.com.fiap.TechChallenger.controller;
+package br.com.fiap.TechChallenger.controller.logado;
 
 import br.com.fiap.TechChallenger.api.EnderecoApi;
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.EnderecoEditDTO;
-import br.com.fiap.TechChallenger.entity.Endereco;
+import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
 import br.com.fiap.TechChallenger.service.endereco.BuscarEnderecoService;
 import br.com.fiap.TechChallenger.service.endereco.CriarEnderecoService;
 import br.com.fiap.TechChallenger.service.endereco.DeletarEnderecoService;
@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/usuarioLogado/endereco")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class EnderecoController implements EnderecoApi {
+public class EnderecoLogadoController implements EnderecoApi {
 
     private final CriarEnderecoService criarEnderecoService;
     private final EditarEnderecoService editarenderecoService;
@@ -38,7 +39,7 @@ public class EnderecoController implements EnderecoApi {
         return deletarEnderecoService.deletarEnderecos(enderecoId);
     }
 
-    public ResponseEntity<List<Endereco>> buscarEnderecos(HttpServletRequest request) {
+    public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(HttpServletRequest request) {
         return buscarEnderecoService.buscarEnderecos(request);
     }
 

@@ -1,6 +1,6 @@
 package br.com.fiap.TechChallenger.service.usuario;
 
-import br.com.fiap.TechChallenger.dto.JwtResponse;
+import br.com.fiap.TechChallenger.dto.response.JwtResponse;
 import br.com.fiap.TechChallenger.dto.LoginRequest;
 import br.com.fiap.TechChallenger.security.JwtUtils;
 import br.com.fiap.TechChallenger.security.UserDetailsImpl;
