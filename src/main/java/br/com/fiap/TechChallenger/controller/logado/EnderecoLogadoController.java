@@ -1,8 +1,8 @@
-package br.com.fiap.TechChallenger.controller;
+package br.com.fiap.TechChallenger.controller.logado;
 
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.EnderecoEditDTO;
-import br.com.fiap.TechChallenger.entity.Endereco;
+import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
 import br.com.fiap.TechChallenger.service.endereco.BuscarEnderecoService;
 import br.com.fiap.TechChallenger.service.endereco.CriarEnderecoService;
 import br.com.fiap.TechChallenger.service.endereco.DeletarEnderecoService;
@@ -16,33 +16,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/endereco")
+@RequestMapping("/usuarioLogado/endereco")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class EnderecoController {
+public class EnderecoLogadoController {
 
     private final CriarEnderecoService criarEnderecoService;
     private final EditarEnderecoService editarenderecoService;
     private final DeletarEnderecoService deletarEnderecoService;
     private final BuscarEnderecoService buscarEnderecoService;
 
-    @PostMapping("/criar")
+    @PostMapping()
     public ResponseEntity<?> criarEndereco(@Valid @RequestBody final EnderecoDTO criarEnderecoRequest, final HttpServletRequest request) {
         return criarEnderecoService.criarEnderecos(criarEnderecoRequest, request);
     }
 
-    @PutMapping("/editar")
+    @PutMapping()
     public ResponseEntity<?> editarEndereco(@Valid @RequestBody final EnderecoEditDTO editarEnderecoRequest, final HttpServletRequest request) {
         return editarenderecoService.editarEnderecos(editarEnderecoRequest, request);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteEndereco(final Long enderecoId) {
-        return deletarEnderecoService.deletarEnderecos(enderecoId);
+    @DeleteMapping("/enderecoId/{enderecoId}")
+    public ResponseEntity<?> deleteEndereco(@PathVariable final Long enderecoId, final HttpServletRequest request) {
+        return deletarEnderecoService.deletarEnderecos(enderecoId, request);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Endereco>> buscarEnderecos(HttpServletRequest request) {
+    @GetMapping()
+    public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(HttpServletRequest request) {
         return buscarEnderecoService.buscarEnderecos(request);
     }
 
