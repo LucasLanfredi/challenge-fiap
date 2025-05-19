@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EnderecoEditDTO {
 
-    private Long id;
+    private Long enderecoId;
 
     @NotBlank(message = "A rua é obrigatória.")
     private String rua;
