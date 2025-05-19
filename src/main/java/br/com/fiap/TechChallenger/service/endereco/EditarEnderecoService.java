@@ -29,7 +29,7 @@ public class EditarEnderecoService {
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
             final Endereco enderecoEntityAlterado = Endereco.builder()
-                    .id(editarEnderecoRequest.getId())
+                    .id(editarEnderecoRequest.getEnderecoId())
                     .numero(editarEnderecoRequest.getNumero())
                     .rua(editarEnderecoRequest.getRua())
                     .cidade(editarEnderecoRequest.getCidade())
