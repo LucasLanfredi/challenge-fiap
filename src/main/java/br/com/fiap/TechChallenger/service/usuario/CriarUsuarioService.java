@@ -2,6 +2,7 @@ package br.com.fiap.TechChallenger.service.usuario;
 
 import br.com.fiap.TechChallenger.dto.MessageResponse;
 import br.com.fiap.TechChallenger.dto.UsuarioDTO;
+import br.com.fiap.TechChallenger.dto.response.UsuarioResponse;
 import br.com.fiap.TechChallenger.entity.Endereco;
 import br.com.fiap.TechChallenger.entity.Usuario;
 import br.com.fiap.TechChallenger.repository.EnderecoRepository;
@@ -58,7 +59,7 @@ public class CriarUsuarioService {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body("Usuário cadastrado com sucesso! ID: " + usuarioSalvo.getId());
+                .body(UsuarioResponse.fromEntity(usuarioSalvo));
     }
 
     public boolean existsByLogin(String login) {
