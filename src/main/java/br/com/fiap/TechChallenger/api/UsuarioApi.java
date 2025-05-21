@@ -57,7 +57,7 @@ public interface UsuarioApi {
             @ApiResponse(responseCode = "200", description = "Dados do usuário retornados"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    ResponseEntity<UsuarioResponse> buscarUsuarioLogado(@PathVariable("userId") Long userId);
+    ResponseEntity<UsuarioResponse> buscarUsuarioById(@PathVariable("userId") Long userId);
 
     @Operation(summary = "Trocar senha", description = "Altera a senha do usuário")
     @ApiResponses(value = {

@@ -41,8 +41,8 @@ public class EnderecoLogadoController implements EnderecoLogadoApi {
 
     @DeleteMapping("/enderecoId/{enderecoId}")
     @Override
-    public ResponseEntity<?> deleteEndereco(@PathVariable final Long enderecoId) {
-        return deletarEnderecoService.deletarEnderecoById(enderecoId);
+    public ResponseEntity<?> deleteEndereco(@PathVariable final Long enderecoId, final HttpServletRequest request) {
+        return deletarEnderecoService.deletarEnderecos(enderecoId, request);
     }
 
     @GetMapping

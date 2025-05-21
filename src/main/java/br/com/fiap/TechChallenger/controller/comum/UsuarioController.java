@@ -31,13 +31,14 @@ public class UsuarioController implements UsuarioApi {
         return criarUsuarioService.criar(criarUsuarioRequest);
     }
 
+    @PutMapping("/userId/{userId}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, @PathVariable("userId") Long userId) {
          return editarUsuarioService.editarUsuarioByUserId(editarUsuarioRequest, userId);
     }
 
-    @PutMapping("/userId/{userId}")
+    @DeleteMapping("/userId/{userId}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> deleteUsuario(@PathVariable Long userId) {
@@ -47,7 +48,7 @@ public class UsuarioController implements UsuarioApi {
     @GetMapping("/userId/{userId}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<UsuarioResponse> buscarUsuarioLogado(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UsuarioResponse> buscarUsuarioById(@PathVariable("userId") Long userId) {
         return buscarUsuarioService.getUsuarioResponseById(userId);
     }
 
