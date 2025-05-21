@@ -2,46 +2,75 @@ package br.com.fiap.TechChallenger.api;
 
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.EnderecoEditDTO;
-import br.com.fiap.TechChallenger.entity.Endereco;
+import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Tag(name = "Endereço", description = "Endpoints para gerenciar endereços de usuários")
-@RestController
-@RequestMapping("/endereco")
 public interface EnderecoApi {
-    @Operation(summary = "Criar endereço", description = "Cria um novo endereço para o usuário autenticado.")
-    @ApiResponse(responseCode = "201", description = "Endereço criado com sucesso")
-    @PostMapping("/criar")
-    ResponseEntity<?> criarEndereco(@RequestBody(description = "Dados para criação do endereço", required = true,
-            content = @Content(schema = @Schema(implementation = EnderecoDTO.class)))final EnderecoDTO criarEnderecoRequest, final HttpServletRequest request);
 
-    @Operation(summary = "Editar endereço", description = "Edita um endereço existente do usuário autenticado.")
-    @ApiResponse(responseCode = "200", description = "Endereço editado com sucesso")
-    @PutMapping("/editar")
-    ResponseEntity<?> editarEndereco(@RequestBody(description = "Dados para edição do endereço", required = true,
-            content = @Content(schema = @Schema(implementation = EnderecoEditDTO.class))) final EnderecoEditDTO editarEnderecoRequest, final HttpServletRequest request);
-
-    @Operation(summary = "Excluir endereço", description = "Exclui um endereço pelo ID.")
+    @Operation(summary = "Criar endereço", description = "Cria um novo endereço para um usuário específico")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Endereço deletado com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Endereço criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+            @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
+    })
+    @PostMapping("/userId/{userId}")
+    ResponseEntity<?> criarEndereco(
+            @RequestBody(description = "Dados para criação do endereço", required = true,
+                    content = @Content(schema = @Schema(implementation = EnderecoDTO.class)))
+            @Valid EnderecoDTO criarEnderecoRequest,
+            @PathVariable @Parameter(description = "ID do usuário") Long userId);
+
+    @Operation(summary = "Editar endereço", description = "Atualiza os dados de um endereço existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Endereço atualizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
+            @ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
             @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
     })
-    @DeleteMapping
-    ResponseEntity<?> deleteEndereco(final Long enderecoId);
+    @PutMapping
+    ResponseEntity<?> editarEndereco(
+            @RequestBody(description = "Dados para edição do endereço", required = true,
+                    content = @Content(schema = @Schema(implementation = EnderecoEditDTO.class)))
+            @Valid EnderecoEditDTO editarEnderecoRequest);
 
-    @Operation(summary = "Buscar endereços", description = "Retorna todos os endereços do usuário autenticado.")
-    @ApiResponse(responseCode = "200", description = "Lista de endereços retornada com sucesso")
-    @GetMapping
-    ResponseEntity<List<Endereco>> buscarEnderecos(HttpServletRequest request);
+    @Operation(summary = "Excluir endereço", description = "Remove um endereço pelo seu ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Endereço excluído com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
+    })
+    @DeleteMapping("/enderecoId/{enderecoId}")
+    ResponseEntity<?> deleteEndereco(
+            @PathVariable @Parameter(description = "ID do endereço") Long enderecoId);
+
+    @Operation(summary = "Buscar endereços por usuário", description = "Lista todos os endereços de um usuário específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Endereços encontrados com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    @GetMapping("/userId/{userId}")
+    ResponseEntity<List<EnderecoResponse>> buscarEnderecos(
+            @PathVariable @Parameter(description = "ID do usuário") Long userId);
+
+    @Operation(summary = "Listar todos os endereços", description = "Retorna todos os endereços cadastrados no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de endereços retornada com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
+    })
+    @GetMapping("/todos")
+    ResponseEntity<List<EnderecoResponse>> buscarTodosEnderecos();
 }

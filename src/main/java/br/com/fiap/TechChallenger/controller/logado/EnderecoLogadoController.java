@@ -1,6 +1,6 @@
 package br.com.fiap.TechChallenger.controller.logado;
 
-import br.com.fiap.TechChallenger.api.EnderecoApi;
+import br.com.fiap.TechChallenger.api.EnderecoLogadoApi;
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.EnderecoEditDTO;
 import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
@@ -20,25 +20,29 @@ import java.util.List;
 @RequestMapping("/usuarioLogado/endereco")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class EnderecoLogadoController implements EnderecoApi {
+public class EnderecoLogadoController implements EnderecoLogadoApi {
 
     private final CriarEnderecoService criarEnderecoService;
     private final EditarEnderecoService editarenderecoService;
     private final DeletarEnderecoService deletarEnderecoService;
     private final BuscarEnderecoService buscarEnderecoService;
 
+    @Override
     public ResponseEntity<?> criarEndereco(@Valid @RequestBody final EnderecoDTO criarEnderecoRequest, final HttpServletRequest request) {
         return criarEnderecoService.criarEnderecos(criarEnderecoRequest, request);
     }
 
+    @Override
     public ResponseEntity<?> editarEndereco(@Valid @RequestBody final EnderecoEditDTO editarEnderecoRequest, final HttpServletRequest request) {
         return editarenderecoService.editarEnderecos(editarEnderecoRequest, request);
     }
 
+    @Override
     public ResponseEntity<?> deleteEndereco(final Long enderecoId) {
-        return deletarEnderecoService.deletarEnderecos(enderecoId);
+        return deletarEnderecoService.deletarEnderecoById(enderecoId);
     }
 
+    @Override
     public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(HttpServletRequest request) {
         return buscarEnderecoService.buscarEnderecos(request);
     }

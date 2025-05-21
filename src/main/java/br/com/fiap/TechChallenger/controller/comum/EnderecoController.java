@@ -1,5 +1,6 @@
 package br.com.fiap.TechChallenger.controller.comum;
 
+import br.com.fiap.TechChallenger.api.EnderecoApi;
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.EnderecoEditDTO;
 import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
@@ -19,41 +20,42 @@ import java.util.List;
 @RequestMapping("/usuario/endereco")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class EnderecoController {
+public class EnderecoController implements EnderecoApi {
 
     private final CriarEnderecoService criarEnderecoService;
-    private final EditarEnderecoService editarenderecoService;
+    private final EditarEnderecoService editarEnderecoService;
     private final DeletarEnderecoService deletarEnderecoService;
     private final BuscarEnderecoService buscarEnderecoService;
 
-    @PostMapping("/userId/{userId}")
+    @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<?> criarEndereco(@Valid @RequestBody final EnderecoDTO criarEnderecoRequest, @PathVariable final Long userId) {
+    public ResponseEntity<?> criarEndereco(
+            @Valid @RequestBody EnderecoDTO criarEnderecoRequest,
+            @PathVariable Long userId) {
         return criarEnderecoService.criarEnderecosByUserId(criarEnderecoRequest, userId);
     }
 
-    @PutMapping()
+    @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<?> editarEndereco(@Valid @RequestBody final EnderecoEditDTO editarEnderecoRequest) {
-        return editarenderecoService.editarEnderecosByEnderecoId(editarEnderecoRequest);
+    public ResponseEntity<?> editarEndereco(@Valid @RequestBody EnderecoEditDTO editarEnderecoRequest) {
+        return editarEnderecoService.editarEnderecosByEnderecoId(editarEnderecoRequest);
     }
 
-    @DeleteMapping
+    @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<?> deleteEndereco(final Long enderecoId) {
+    public ResponseEntity<?> deleteEndereco(@PathVariable Long enderecoId) {
         return deletarEnderecoService.deletarEnderecoById(enderecoId);
     }
 
-    @GetMapping("/userId/{userId}")
+    @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(@PathVariable final Long userId) {
+    public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(@PathVariable Long userId) {
         return buscarEnderecoService.buscarEnderecosByUserId(userId);
     }
 
-    @GetMapping("/todos")
+    @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<List<EnderecoResponse>> buscarTodosEnderecos() {
         return buscarEnderecoService.buscarTodosEnderecos();
     }
-
 }

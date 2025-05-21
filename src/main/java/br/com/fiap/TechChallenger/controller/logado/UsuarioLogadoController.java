@@ -1,6 +1,6 @@
 package br.com.fiap.TechChallenger.controller.logado;
 
-import br.com.fiap.TechChallenger.api.UsuarioApi;
+import br.com.fiap.TechChallenger.api.UsuarioLogadoApi;
 import br.com.fiap.TechChallenger.dto.TrocaSenhaDto;
 import br.com.fiap.TechChallenger.dto.UsuarioEditDTO;
 import br.com.fiap.TechChallenger.dto.response.UsuarioResponse;
@@ -17,26 +17,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/usuarioLogado")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class UsuarioController implements UsuarioApi {
+public class UsuarioLogadoController implements UsuarioLogadoApi {
 
     private final EditarUsuarioService editarUsuarioService;
     private final DeletarUsuarioService deletarUsuarioService;
     private final BuscarUsuarioService buscarUsuarioService;
     private final TrocarSenhaService trocarSenhaService;
 
+    @Override
     public ResponseEntity<?> editarUsuario(@Valid @RequestBody final UsuarioEditDTO editarUsuarioRequest, final HttpServletRequest request) throws AuthException {
          return editarUsuarioService.editar(editarUsuarioRequest, request);
     }
 
+    @Override
     public ResponseEntity<?> deleteUsuario(final HttpServletRequest request) throws AuthException {
         return deletarUsuarioService.deletar(request);
     }
 
+    @Override
     public ResponseEntity<UsuarioResponse> buscarUsuarioLogado(final HttpServletRequest request) {
         return buscarUsuarioService.buscar(request);
     }
 
-    @PutMapping("/senha")
+    @Override
     public ResponseEntity<?> trocarSenha(@Valid @RequestBody final TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException {
         return trocarSenhaService.execute(trocaSenhaDto);
     }
