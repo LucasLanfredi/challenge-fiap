@@ -33,7 +33,7 @@ public interface EnderecoLogadoApi {
             @ApiResponse(responseCode = "200", description = "Endereço deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
     })
-    ResponseEntity<?> deleteEndereco(@PathVariable Long enderecoId);
+    ResponseEntity<?> deleteEndereco(@PathVariable Long enderecoId, HttpServletRequest request);
 
     @Operation(summary = "Buscar endereços", description = "Retorna todos os endereços do usuário autenticado.")
     @ApiResponse(responseCode = "200", description = "Lista de endereços retornada com sucesso")
