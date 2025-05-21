@@ -21,7 +21,6 @@ public interface UsuarioApi {
             @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos na requisição")
     })
-    @PostMapping
     ResponseEntity<?> criarUsuario(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Dados do novo usuário",
@@ -36,7 +35,6 @@ public interface UsuarioApi {
             @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @PutMapping("/userId/{userId}")
     ResponseEntity<?> editarUsuario(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Dados atualizados do usuário",
@@ -59,7 +57,6 @@ public interface UsuarioApi {
             @ApiResponse(responseCode = "200", description = "Dados do usuário retornados"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @GetMapping("/userId/{userId}")
     ResponseEntity<UsuarioResponse> buscarUsuarioLogado(@PathVariable("userId") Long userId);
 
     @Operation(summary = "Trocar senha", description = "Altera a senha do usuário")
@@ -67,7 +64,6 @@ public interface UsuarioApi {
             @ApiResponse(responseCode = "200", description = "Senha alterada com sucesso"),
             @ApiResponse(responseCode = "400", description = "Senha atual inválida")
     })
-    @PutMapping("/senha")
     ResponseEntity<?> trocarSenha(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Dados para alteração de senha",

@@ -27,21 +27,25 @@ public class EnderecoLogadoController implements EnderecoLogadoApi {
     private final DeletarEnderecoService deletarEnderecoService;
     private final BuscarEnderecoService buscarEnderecoService;
 
+    @PostMapping()
     @Override
     public ResponseEntity<?> criarEndereco(@Valid @RequestBody final EnderecoDTO criarEnderecoRequest, final HttpServletRequest request) {
         return criarEnderecoService.criarEnderecos(criarEnderecoRequest, request);
     }
 
+    @PutMapping()
     @Override
     public ResponseEntity<?> editarEndereco(@Valid @RequestBody final EnderecoEditDTO editarEnderecoRequest, final HttpServletRequest request) {
         return editarenderecoService.editarEnderecos(editarEnderecoRequest, request);
     }
 
+    @DeleteMapping("/enderecoId/{enderecoId}")
     @Override
-    public ResponseEntity<?> deleteEndereco(final Long enderecoId) {
+    public ResponseEntity<?> deleteEndereco(@PathVariable final Long enderecoId) {
         return deletarEnderecoService.deletarEnderecoById(enderecoId);
     }
 
+    @GetMapping
     @Override
     public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(HttpServletRequest request) {
         return buscarEnderecoService.buscarEnderecos(request);

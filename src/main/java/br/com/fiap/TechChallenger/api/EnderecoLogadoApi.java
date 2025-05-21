@@ -20,13 +20,11 @@ import java.util.List;
 public interface EnderecoLogadoApi {
     @Operation(summary = "Criar endereço", description = "Cria um novo endereço para o usuário autenticado.")
     @ApiResponse(responseCode = "201", description = "Endereço criado com sucesso")
-    @PostMapping()
     ResponseEntity<?> criarEndereco(@RequestBody(description = "Dados para criação do endereço", required = true,
             content = @Content(schema = @Schema(implementation = EnderecoDTO.class)))final EnderecoDTO criarEnderecoRequest, final HttpServletRequest request);
 
     @Operation(summary = "Editar endereço", description = "Edita um endereço existente do usuário autenticado.")
     @ApiResponse(responseCode = "200", description = "Endereço editado com sucesso")
-    @PutMapping()
     ResponseEntity<?> editarEndereco(@RequestBody(description = "Dados para edição do endereço", required = true,
             content = @Content(schema = @Schema(implementation = EnderecoEditDTO.class))) final EnderecoEditDTO editarEnderecoRequest, final HttpServletRequest request);
 
@@ -35,11 +33,9 @@ public interface EnderecoLogadoApi {
             @ApiResponse(responseCode = "200", description = "Endereço deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
     })
-    @DeleteMapping
-    ResponseEntity<?> deleteEndereco(final Long enderecoId);
+    ResponseEntity<?> deleteEndereco(@PathVariable Long enderecoId);
 
     @Operation(summary = "Buscar endereços", description = "Retorna todos os endereços do usuário autenticado.")
     @ApiResponse(responseCode = "200", description = "Lista de endereços retornada com sucesso")
-    @GetMapping
     ResponseEntity<List<EnderecoResponse>> buscarEnderecos(HttpServletRequest request);
 }

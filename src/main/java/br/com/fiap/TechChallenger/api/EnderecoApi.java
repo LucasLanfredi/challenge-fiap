@@ -26,7 +26,6 @@ public interface EnderecoApi {
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos"),
             @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
     })
-    @PostMapping("/userId/{userId}")
     ResponseEntity<?> criarEndereco(
             @RequestBody(description = "Dados para criação do endereço", required = true,
                     content = @Content(schema = @Schema(implementation = EnderecoDTO.class)))
@@ -40,7 +39,6 @@ public interface EnderecoApi {
             @ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
             @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
     })
-    @PutMapping
     ResponseEntity<?> editarEndereco(
             @RequestBody(description = "Dados para edição do endereço", required = true,
                     content = @Content(schema = @Schema(implementation = EnderecoEditDTO.class)))
@@ -52,7 +50,6 @@ public interface EnderecoApi {
             @ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
             @ApiResponse(responseCode = "404", description = "Endereço não encontrado")
     })
-    @DeleteMapping("/enderecoId/{enderecoId}")
     ResponseEntity<?> deleteEndereco(
             @PathVariable @Parameter(description = "ID do endereço") Long enderecoId);
 
@@ -62,8 +59,7 @@ public interface EnderecoApi {
             @ApiResponse(responseCode = "401", description = "Usuário não autorizado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @GetMapping("/userId/{userId}")
-    ResponseEntity<List<EnderecoResponse>> buscarEnderecos(
+    ResponseEntity<List<EnderecoResponse>> buscarEnderecosByUserId(
             @PathVariable @Parameter(description = "ID do usuário") Long userId);
 
     @Operation(summary = "Listar todos os endereços", description = "Retorna todos os endereços cadastrados no sistema")
@@ -71,6 +67,5 @@ public interface EnderecoApi {
             @ApiResponse(responseCode = "200", description = "Lista de endereços retornada com sucesso"),
             @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
     })
-    @GetMapping("/todos")
     ResponseEntity<List<EnderecoResponse>> buscarTodosEnderecos();
 }

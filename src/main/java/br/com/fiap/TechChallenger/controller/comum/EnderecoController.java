@@ -27,6 +27,7 @@ public class EnderecoController implements EnderecoApi {
     private final DeletarEnderecoService deletarEnderecoService;
     private final BuscarEnderecoService buscarEnderecoService;
 
+    @PostMapping("/userId/{userId}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> criarEndereco(
@@ -35,24 +36,28 @@ public class EnderecoController implements EnderecoApi {
         return criarEnderecoService.criarEnderecosByUserId(criarEnderecoRequest, userId);
     }
 
+    @PutMapping
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> editarEndereco(@Valid @RequestBody EnderecoEditDTO editarEnderecoRequest) {
         return editarEnderecoService.editarEnderecosByEnderecoId(editarEnderecoRequest);
     }
 
+    @DeleteMapping("/enderecoId/{enderecoId}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> deleteEndereco(@PathVariable Long enderecoId) {
         return deletarEnderecoService.deletarEnderecoById(enderecoId);
     }
 
+    @GetMapping("/userId/{userId}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(@PathVariable Long userId) {
+    public ResponseEntity<List<EnderecoResponse>> buscarEnderecosByUserId(@PathVariable Long userId) {
         return buscarEnderecoService.buscarEnderecosByUserId(userId);
     }
 
+    @GetMapping("/todos")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<List<EnderecoResponse>> buscarTodosEnderecos() {

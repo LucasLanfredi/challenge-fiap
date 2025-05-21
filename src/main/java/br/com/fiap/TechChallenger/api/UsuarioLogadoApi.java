@@ -23,7 +23,6 @@ public interface UsuarioLogadoApi {
             @ApiResponse(responseCode = "200", description = "Usuário editado com sucesso"),
             @ApiResponse(responseCode = "401", description = "Usuário não autenticado")
     })
-    @PutMapping()
     ResponseEntity<?> editarUsuario(@RequestBody(
             description = "Dados para edição do usuário", required = true,
             content = @Content(schema = @Schema(implementation = UsuarioEditDTO.class)
@@ -34,14 +33,12 @@ public interface UsuarioLogadoApi {
             @ApiResponse(responseCode = "200", description = "Usuário deletado com sucesso"),
             @ApiResponse(responseCode = "401", description = "Usuário não autenticado")
     })
-    @DeleteMapping
     ResponseEntity<?> deleteUsuario(HttpServletRequest request) throws AuthException;
 
     @Operation(summary = "Buscar usuário logado", description = "Retorna os dados do usuário atualmente autenticado.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dados do usuário retornados com sucesso")
     })
-    @GetMapping()
     ResponseEntity<UsuarioResponse> buscarUsuarioLogado(HttpServletRequest request);
 
     @Operation(summary = "Trocar senha", description = "Permite ao usuário logado alterar sua senha.")
@@ -50,6 +47,5 @@ public interface UsuarioLogadoApi {
             @ApiResponse(responseCode = "400", description = "Senha atual inválida"),
             @ApiResponse(responseCode = "401", description = "Usuário não autenticado")
     })
-    @PutMapping("/senha")
     ResponseEntity<?> trocarSenha(TrocaSenhaDto trocaSenhaDto) throws SenhaInvalidaException;
 }
