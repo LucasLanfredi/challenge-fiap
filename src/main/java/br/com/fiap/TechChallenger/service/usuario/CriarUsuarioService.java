@@ -25,13 +25,6 @@ public class CriarUsuarioService {
 
     public ResponseEntity<?> criar(final UsuarioDTO dto) {
 
-        if (existsByLogin(dto.getLogin())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Erro: Login já existente!"));
-        }
-        if (existsByEmail(dto.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Erro: Email já existente!"));
-        }
-
         final Usuario usuario = Usuario.builder()
                 .nome(dto.getNome())
                 .email(dto.getEmail())
