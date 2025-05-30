@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(description = "Representa um endereço do usuário")
 public class EnderecoEditDTO {
+
     @Schema(description = "Id do endereço")
     private Long enderecoId;
 
