@@ -1,6 +1,5 @@
 package br.com.fiap.TechChallenger.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.Instant;

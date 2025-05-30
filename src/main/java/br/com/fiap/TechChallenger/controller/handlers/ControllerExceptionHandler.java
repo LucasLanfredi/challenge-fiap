@@ -1,7 +1,6 @@
 package br.com.fiap.TechChallenger.controller.handlers;
 
 import br.com.fiap.TechChallenger.dto.ErroCustomizado;
-import br.com.fiap.TechChallenger.service.exception.SenhaInvalidaException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
