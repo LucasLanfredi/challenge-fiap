@@ -1,5 +1,6 @@
 package br.com.fiap.TechChallenger.controller.logado;
 
+import br.com.fiap.TechChallenger.api.EnderecoLogadoApi;
 import br.com.fiap.TechChallenger.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.dto.EnderecoEditDTO;
 import br.com.fiap.TechChallenger.dto.response.EnderecoResponse;
@@ -19,7 +20,7 @@ import java.util.List;
 @RequestMapping("/usuarioLogado/endereco")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class EnderecoLogadoController {
+public class EnderecoLogadoController implements EnderecoLogadoApi {
 
     private final CriarEnderecoService criarEnderecoService;
     private final EditarEnderecoService editarenderecoService;
@@ -27,21 +28,25 @@ public class EnderecoLogadoController {
     private final BuscarEnderecoService buscarEnderecoService;
 
     @PostMapping()
+    @Override
     public ResponseEntity<?> criarEndereco(@Valid @RequestBody final EnderecoDTO criarEnderecoRequest, final HttpServletRequest request) {
         return criarEnderecoService.criarEnderecos(criarEnderecoRequest, request);
     }
 
     @PutMapping()
+    @Override
     public ResponseEntity<?> editarEndereco(@Valid @RequestBody final EnderecoEditDTO editarEnderecoRequest, final HttpServletRequest request) {
         return editarenderecoService.editarEnderecos(editarEnderecoRequest, request);
     }
 
     @DeleteMapping("/enderecoId/{enderecoId}")
+    @Override
     public ResponseEntity<?> deleteEndereco(@PathVariable final Long enderecoId, final HttpServletRequest request) {
         return deletarEnderecoService.deletarEnderecos(enderecoId, request);
     }
 
-    @GetMapping()
+    @GetMapping
+    @Override
     public ResponseEntity<List<EnderecoResponse>> buscarEnderecos(HttpServletRequest request) {
         return buscarEnderecoService.buscarEnderecos(request);
     }
