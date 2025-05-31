@@ -38,7 +38,7 @@ services:
       retries: 5
       start_period: 10s
     ports:
-      - "5432:5432"
+      - "9876:5432"
     networks:
       - fiap_network
 
