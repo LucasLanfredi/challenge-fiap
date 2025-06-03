@@ -19,4 +19,4 @@ COPY --from=build /app/target/*.jar app.jar
 # Expõe a porta 8080
 EXPOSE 8080
 # Define o comando de execução da aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=docker"]
