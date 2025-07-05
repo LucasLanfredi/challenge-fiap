@@ -16,7 +16,6 @@ services:
       SECRET_KEY: MinhaChaveSecretaSuperSegura123!
     depends_on:
       db:
-        # A condição para iniciar a máquina é o healthcheck do banco.
         condition: service_healthy
     networks:
       - fiap_network
@@ -30,7 +29,6 @@ services:
       POSTGRES_DB: database
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    # Para ter certeza que o banco está pronto para receber uma nova conexão.
     healthcheck:
       test: [ "CMD", "pg_isready", "-d", "database", "-U", "usuario" ]
       interval: 5s
