@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-@Schema(description = "Entrada para edição de usuário")
+@Schema(description = "Dados de usuário")
 @Data
 public class UsuarioEditDTO {
 
