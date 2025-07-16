@@ -1,6 +1,6 @@
 package br.com.fiap.TechChallenger.domains;
 
-public enum Alergenos {
+public enum Alergeno {
     GLUTEM,
     LACTOSE,
     SOJA,

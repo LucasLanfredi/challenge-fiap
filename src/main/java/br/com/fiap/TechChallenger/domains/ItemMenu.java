@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,13 +31,33 @@ public class ItemMenu {
     private String urlImagem;
 
     @ElementCollection
-    private List<String> ingrdientes;
+    private Set<String> ingredientes = new HashSet<>();
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private List<Alergenos> alergenos;
+    private Set<Alergeno> alergenos = new HashSet<>();
 
     private boolean disponivel;
 
     //private Restaurante restaurante;
+
+    public void adicionarIngrediente(String ingrediente){
+        ingredientes.add(ingrediente);
+    }
+
+    public void removerIngrediente(String ingrediente){
+        ingredientes.remove(ingrediente);
+    }
+
+    public void adicionarAlergeno(Alergeno alergeno){
+        alergenos.add(alergeno);
+    }
+
+    public void removerAlergeno(Alergeno alergeno){
+        alergenos.remove(alergeno);
+    }
+
+    public void marcarComoIndisponivel(){
+        this.disponivel = false;
+    }
 }
