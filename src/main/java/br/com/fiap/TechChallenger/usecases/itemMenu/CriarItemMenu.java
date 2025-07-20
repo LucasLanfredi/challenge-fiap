@@ -1,5 +1,6 @@
 package br.com.fiap.TechChallenger.usecases.itemMenu;
 
+import br.com.fiap.TechChallenger.domains.Alergeno;
 import br.com.fiap.TechChallenger.domains.ItemMenu;
 import br.com.fiap.TechChallenger.domains.dto.ItemMenuDTO;
 import br.com.fiap.TechChallenger.domains.dto.response.ItemMenuResponse;
@@ -9,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 @AllArgsConstructor
 public class CriarItemMenu {
@@ -16,13 +20,23 @@ public class CriarItemMenu {
     private final ItemMenuRepository itemMenuRepository;
 
     public ResponseEntity<ItemMenuResponse> criar(final ItemMenuDTO dto){
+
+        Set<String> ingredientes = new HashSet<>();
+        Set<Alergeno> alergenos = new HashSet<>();
+
+        if (dto.getIngredientes() != null) {
+            ingredientes.addAll(dto.getIngredientes());
+        }
+
+        if (dto.getAlergenos() != null) {
+            alergenos.addAll(dto.getAlergenos());
+        }
+
         final ItemMenu item = ItemMenu.builder()
                 .nomePrato(dto.getNomePrato())
                 .descricaoPrato(dto.getDescricaoPrato())
                 .preco(dto.getPreco())
                 .urlImagem(dto.getUrlImagem())
-                .ingredientes(dto.getIngredientes())
-                .alergenos(dto.getAlergenos())
                 .disponivel(dto.isDisponivel())
                 .build();
 

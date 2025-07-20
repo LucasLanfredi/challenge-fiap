@@ -31,33 +31,21 @@ public class ItemMenu {
     private String urlImagem;
 
     @ElementCollection
-    private Set<String> ingredientes = new HashSet<>();
+    private Set<String> ingredientes;
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<Alergeno> alergenos = new HashSet<>();
+    private Set<Alergeno> alergenos;
 
-    private boolean disponivel;
+    private boolean disponivel = true;
 
     //private Restaurante restaurante;
 
-    public void adicionarIngrediente(String ingrediente){
-        ingredientes.add(ingrediente);
-    }
-
-    public void removerIngrediente(String ingrediente){
-        ingredientes.remove(ingrediente);
-    }
-
-    public void adicionarAlergeno(Alergeno alergeno){
-        alergenos.add(alergeno);
-    }
-
-    public void removerAlergeno(Alergeno alergeno){
-        alergenos.remove(alergeno);
-    }
-
     public void marcarComoIndisponivel(){
         this.disponivel = false;
+    }
+
+    public void marcarComoDisponivel() {
+        this.disponivel = true;
     }
 }
