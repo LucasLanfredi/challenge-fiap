@@ -30,11 +30,23 @@ public class ItemMenu {
     @Setter
     private String urlImagem;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "ITEM_MENU_INGREDIENTES",
+            joinColumns = @JoinColumn(name = "item_menu_id")
+    )
+    @Column(name = "ingredientes")
+    @Setter
     private Set<String> ingredientes;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "ITEM_MENU_ALERGENOS",
+            joinColumns = @JoinColumn(name = "item_menu_id")
+    )
     @Enumerated(EnumType.STRING)
+    @Column(name = "alergenos")
+    @Setter
     private Set<Alergeno> alergenos;
 
     private boolean disponivel = true;

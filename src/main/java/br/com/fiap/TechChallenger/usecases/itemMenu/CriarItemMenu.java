@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -21,22 +22,15 @@ public class CriarItemMenu {
 
     public ResponseEntity<ItemMenuResponse> criar(final ItemMenuDTO dto){
 
-        Set<String> ingredientes = new HashSet<>();
-        Set<Alergeno> alergenos = new HashSet<>();
 
-        if (dto.getIngredientes() != null) {
-            ingredientes.addAll(dto.getIngredientes());
-        }
-
-        if (dto.getAlergenos() != null) {
-            alergenos.addAll(dto.getAlergenos());
-        }
 
         final ItemMenu item = ItemMenu.builder()
                 .nomePrato(dto.getNomePrato())
                 .descricaoPrato(dto.getDescricaoPrato())
                 .preco(dto.getPreco())
                 .urlImagem(dto.getUrlImagem())
+                .ingredientes(new HashSet<>(dto.getIngredientes()))
+                .alergenos(new HashSet<>(Optional.ofNullable(dto.getAlergenos()).orElse(Set.of())))
                 .disponivel(dto.isDisponivel())
                 .build();
 

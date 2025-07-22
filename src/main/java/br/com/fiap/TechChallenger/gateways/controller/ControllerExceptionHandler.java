@@ -60,7 +60,7 @@ public class ControllerExceptionHandler {
     }
 
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(RecursoNaoEncontradoException.class)
     public ResponseEntity<ErroCustomizado> handleNotFound(
         RecursoNaoEncontradoException e,
         HttpServletRequest request) {
