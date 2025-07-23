@@ -1,14 +1,26 @@
 package br.com.fiap.TechChallenger.domains;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 @Builder
 @Getter
-@RequiredArgsConstructor
+@Entity
+@AllArgsConstructor
 public class HorariosDeFuncionamento {
-    private final Horarios diasUteis;
-    private final Horarios sabado;
-    private final Horarios domingoEFeriado;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idHorariosDeFuncionamento;
+
+    @OneToOne
+    private Horarios diasUteis;
+
+    @OneToOne
+    private Horarios sabado;
+
+    @OneToOne
+    private Horarios domingoEFeriado;
 }

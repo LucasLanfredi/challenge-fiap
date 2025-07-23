@@ -3,7 +3,6 @@ package br.com.fiap.TechChallenger.usecases.restaurante;
 import br.com.fiap.TechChallenger.domains.*;
 import br.com.fiap.TechChallenger.domains.dto.*;
 import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
-import br.com.fiap.TechChallenger.gateways.repository.UsuarioRepository;
 import br.com.fiap.TechChallenger.usecases.exception.TipoUsuarioInvalidoException;
 import br.com.fiap.TechChallenger.usecases.security.Autenticacao;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +17,6 @@ public class CadastrarRestaurante {
 
     private final Autenticacao autenticacao;
     private final RestauranteRepository restauranteRepository;
-    private final UsuarioRepository usuarioRepository;
 
     public ResponseEntity<?> execute(final RestauranteDto restauranteDto, HttpServletRequest request) {
 

@@ -1,28 +1,31 @@
 package br.com.fiap.TechChallenger.domains;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
+@Entity
 @Builder
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Restaurante {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long idRestaurante;
+    private Long idRestaurante;
 
-    private final String nome;
+    private String nome;
 
-    private final Endereco endereco;
+    @OneToOne
+    private Endereco endereco;
 
-    private final String tipoDeCozinha;
+    private String tipoDeCozinha;
 
-    private final HorariosDeFuncionamento horarioDeFuncionamento;
+    @OneToOne
+    private HorariosDeFuncionamento horarioDeFuncionamento;
 
-    private final Usuario DonoDoRestaurante;
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario DonoDoRestaurante;
 }

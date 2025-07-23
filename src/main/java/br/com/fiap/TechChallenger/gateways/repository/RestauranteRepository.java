@@ -1,8 +1,8 @@
 package br.com.fiap.TechChallenger.gateways.repository;
 
-import br.com.fiap.TechChallenger.domains.dto.RestauranteDto;
+import br.com.fiap.TechChallenger.domains.Restaurante;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RestauranteRepository extends JpaRepository<RestauranteDto, Long> {
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
 }
