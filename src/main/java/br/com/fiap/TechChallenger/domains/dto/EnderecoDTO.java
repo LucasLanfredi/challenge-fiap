@@ -31,7 +31,6 @@ public class EnderecoDTO {
     private String cidade;
 
     @Schema(description = "Estado", example = "SP")
-
     @NotBlank(message = "O estado é obrigatório.")
     @Size(min = 2, max = 2, message = "O estado deve conter exatamente 2 letras (ex: SP, RJ).")
     private String estado;
