@@ -53,12 +53,4 @@ public class CriarUsuario {
                 .body("Usuário cadastrado com sucesso! ID: " + usuarioSalvo.getId());
     }
 
-    public boolean existsByLogin(String login) {
-        return usuarioRepository.findByLogin(login).isPresent();
-    }
-
-    public boolean existsByEmail(String email) {
-        return usuarioRepository.existsByEmail(email);
-    }
-
 }

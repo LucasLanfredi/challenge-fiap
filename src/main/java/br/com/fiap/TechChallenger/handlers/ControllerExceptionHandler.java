@@ -1,4 +1,4 @@
-package br.com.fiap.TechChallenger.gateways.controller;
+package br.com.fiap.TechChallenger.handlers;
 
 import br.com.fiap.TechChallenger.domains.dto.ErroCustomizado;
 import jakarta.servlet.http.HttpServletRequest;
