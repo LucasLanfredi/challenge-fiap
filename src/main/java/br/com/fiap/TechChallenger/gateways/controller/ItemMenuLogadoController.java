@@ -6,9 +6,11 @@ import br.com.fiap.TechChallenger.gateways.controller.api.ItemMenuLogadoApi;
 import br.com.fiap.TechChallenger.usecases.itemMenu.CriarItemMenu;
 import br.com.fiap.TechChallenger.usecases.itemMenu.DeletarItemMenu;
 import br.com.fiap.TechChallenger.usecases.itemMenu.EditarItemMenu;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,19 +25,22 @@ public class ItemMenuLogadoController implements ItemMenuLogadoApi {
 
     @Override
     @PostMapping
-    public ResponseEntity<ItemMenuResponse> criar(@Valid @RequestBody ItemMenuDTO dto) {
-        return criarItemMenu.criar(dto);
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<ItemMenuResponse> criar(@Valid @RequestBody ItemMenuDTO dto,  HttpServletRequest request) {
+        return criarItemMenu.criar(dto, request);
     }
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<ItemMenuResponse> editar(@PathVariable Long id, @Valid @RequestBody ItemMenuDTO dto) {
-        return editarItemMenu.editar(id, dto);
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<ItemMenuResponse> editar(@PathVariable Long id, @Valid @RequestBody ItemMenuDTO dto, HttpServletRequest request) {
+        return editarItemMenu.editar(id, dto, request);
     }
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        return deletarItemMenu.deletar(id);
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    public ResponseEntity<Void> deletar(@PathVariable Long id,  HttpServletRequest request) {
+        return deletarItemMenu.deletar(id, request);
     }
 }

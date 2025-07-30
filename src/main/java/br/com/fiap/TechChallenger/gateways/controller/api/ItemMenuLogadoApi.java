@@ -4,6 +4,7 @@ import br.com.fiap.TechChallenger.domains.dto.ErroCustomizado;
 import br.com.fiap.TechChallenger.domains.dto.ItemMenuDTO;
 import br.com.fiap.TechChallenger.domains.dto.response.ItemMenuResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,8 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @Tag(name = "Item Menu", description = "Endpoints para visualizar e gerenciar itens do menu")
 public interface ItemMenuLogadoApi {
@@ -42,7 +45,9 @@ public interface ItemMenuLogadoApi {
             required = true,
             content = @Content(schema = @Schema(implementation = ItemMenuDTO.class))
     )
-            @Valid ItemMenuDTO dto);
+            @Valid ItemMenuDTO dto,
+            @Parameter(hidden = true) HttpServletRequest request
+    );
 
 
 
@@ -72,7 +77,8 @@ public interface ItemMenuLogadoApi {
                     required = true,
                     content = @Content(schema = @Schema(implementation = ItemMenuDTO.class))
             )
-            @Valid ItemMenuDTO dto
+            @Valid ItemMenuDTO dto,
+            @Parameter(hidden = true) HttpServletRequest request
     );
 
 
@@ -90,6 +96,11 @@ public interface ItemMenuLogadoApi {
             )
     })
     @DeleteMapping("/{id}")
-    ResponseEntity<Void> deletar(@PathVariable Long id);
+    ResponseEntity<Void> deletar(
+            @PathVariable Long id,
+            @Parameter(hidden = true) HttpServletRequest request
+    );
+
+
 
 }

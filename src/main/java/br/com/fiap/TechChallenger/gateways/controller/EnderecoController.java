@@ -38,7 +38,7 @@ public class EnderecoController implements EnderecoApi {
 
     @PutMapping
     @Override
-        @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
+    @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> editarEndereco(@Valid @RequestBody EnderecoEditDTO editarEnderecoRequest) {
         return editarEndereco.editarEnderecosByEnderecoId(editarEnderecoRequest);
     }

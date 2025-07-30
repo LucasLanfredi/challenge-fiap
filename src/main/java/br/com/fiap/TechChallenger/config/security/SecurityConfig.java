@@ -85,8 +85,7 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/auth/**",
                                 "/h2-console/**",
-                                "/error",
-                                "/item-menu/**"
+                                "/error"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
                         .anyRequest().authenticated()
