@@ -3,6 +3,7 @@ package br.com.fiap.TechChallenger.gateways.controllers;
 import br.com.fiap.TechChallenger.domains.Endereco;
 import br.com.fiap.TechChallenger.domains.dto.EnderecoDTO;
 import br.com.fiap.TechChallenger.domains.dto.EnderecoEditDTO;
+import br.com.fiap.TechChallenger.domains.dto.response.EnderecoResponse;
 import br.com.fiap.TechChallenger.gateways.controller.EnderecoController;
 import br.com.fiap.TechChallenger.handlers.ControllerExceptionHandler;
 import br.com.fiap.TechChallenger.usecases.endereco.BuscarEndereco;
@@ -22,10 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.List;
+
 import static br.com.fiap.TechChallenger.helpers.EnderecoHelper.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -121,6 +123,67 @@ public class EnderecoControllerTest {
                     .andExpect(status().isOk());
 
             verify(editarEndereco, times(1)).editarEnderecosByEnderecoId(enderecoEditRequest);
+        }
+    }
+
+    @Nested
+    class DeletarEnderecoById {
+        @Test
+        void devePermitirDeletarEndereco() throws Exception {
+            // Arrange
+            Long enderecoId = 1L;
+
+            when(deletarEndereco.deletarEnderecoById(enderecoId))
+                    .thenReturn(ResponseEntity.ok().build());
+
+            mockMvc.perform(delete("/usuario/endereco/enderecoId/{id}", enderecoId)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+            verify(deletarEndereco, times(1)).deletarEnderecoById(enderecoId);
+        }
+    }
+
+    @Nested
+    class ObterEnderecos {
+        @Test
+        void devePermitirBuscarEnderecosByUserId() throws Exception {
+            // Arrange
+            Long userId = 1L;
+            Endereco endereco = gerarEndereco();
+            when(buscarEndereco.buscarEnderecosByUserId(userId))
+                    .thenReturn(ResponseEntity.ok(List.of(EnderecoResponse.fromEntity(endereco))));
+
+            mockMvc.perform(get("/usuario/endereco/userId/{userId}", userId)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].id").value(endereco.getId()))
+                    .andExpect(jsonPath("$[0].estado").value(endereco.getEstado()))
+                    .andExpect(jsonPath("$[0].cidade").value(endereco.getCidade()))
+                    .andExpect(jsonPath("$[0].rua").value(endereco.getRua()))
+                    .andExpect(jsonPath("$[0].numero").value(endereco.getNumero()))
+                    .andExpect(jsonPath("$[0].cep").value(endereco.getCep()));
+
+            verify(buscarEndereco, times(1)).buscarEnderecosByUserId(userId);
+        }
+
+        @Test
+        void devePermitirBuscarTodosEnderecos() throws Exception {
+            // Arrange
+            Endereco endereco = gerarEndereco();
+            when(buscarEndereco.buscarTodosEnderecos())
+                    .thenReturn(ResponseEntity.ok(List.of(EnderecoResponse.fromEntity(endereco))));
+
+            mockMvc.perform(get("/usuario/endereco/todos")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].id").value(endereco.getId()))
+                    .andExpect(jsonPath("$[0].estado").value(endereco.getEstado()))
+                    .andExpect(jsonPath("$[0].cidade").value(endereco.getCidade()))
+                    .andExpect(jsonPath("$[0].rua").value(endereco.getRua()))
+                    .andExpect(jsonPath("$[0].numero").value(endereco.getNumero()))
+                    .andExpect(jsonPath("$[0].cep").value(endereco.getCep()));
+
+            verify(buscarEndereco, times(1)).buscarTodosEnderecos();
         }
     }
 
