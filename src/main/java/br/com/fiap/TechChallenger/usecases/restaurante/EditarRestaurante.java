@@ -42,13 +42,6 @@ public class EditarRestaurante {
     private Restaurante updateRestauranteFromDto(final RestauranteDto restauranteDto) {
         return Restaurante.builder()
                 .nome(restauranteDto.getNome() != null ? restauranteDto.getNome() : null)
-                .endereco(Endereco.builder()
-                        .rua(restauranteDto.getEnderecoDTO().getRua() != null ? restauranteDto.getEnderecoDTO().getRua() : null)
-                        .numero(restauranteDto.getEnderecoDTO().getNumero() != null ? restauranteDto.getEnderecoDTO().getNumero() : null)
-                        .cidade(restauranteDto.getEnderecoDTO().getCidade() != null ? restauranteDto.getEnderecoDTO().getCidade() : null)
-                        .estado(restauranteDto.getEnderecoDTO().getEstado() != null ? restauranteDto.getEnderecoDTO().getEstado() : null)
-                        .cep(restauranteDto.getEnderecoDTO().getCep() != null ? restauranteDto.getEnderecoDTO().getCep() : null)
-                        .build())
                 .tipoDeCozinha(restauranteDto.getTipoDeCozinha() != null ? restauranteDto.getTipoDeCozinha() : null)
                 .horarioDeFuncionamento(HorariosDeFuncionamento.builder()
                         .diasUteis(Horarios.builder()
@@ -69,11 +62,6 @@ public class EditarRestaurante {
                                 .fechamento(restauranteDto.getHorariosDeFuncionamentoDTO().getDomingoEFeriado().getFechamento() != null ?
                                         restauranteDto.getHorariosDeFuncionamentoDTO().getDomingoEFeriado().getFechamento(): null)
                                 .build())
-                        .build())
-                .DonoDoRestaurante(Usuario.builder()
-                        .nome(restauranteDto.getDonoDoRestaurante().getNome() != null ? restauranteDto.getDonoDoRestaurante().getNome() : null)
-                        .email(restauranteDto.getDonoDoRestaurante().getEmail() != null ? restauranteDto.getDonoDoRestaurante().getEmail(): null)
-                        .tipoUsuario(restauranteDto.getDonoDoRestaurante().getTipoUsuario() != null ? restauranteDto.getDonoDoRestaurante().getTipoUsuario() : null)
                         .build())
                 .build();
 
