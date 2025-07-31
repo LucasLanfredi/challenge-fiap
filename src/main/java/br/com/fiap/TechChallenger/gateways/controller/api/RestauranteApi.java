@@ -61,7 +61,7 @@ public interface RestauranteApi {
 
     @Operation(summary = "Excluir restaurante cadastrado", description = "Exclui um restaurante cadastrado através do seu id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Restaurante deletado com sucesso"),
+            @ApiResponse(responseCode = "204", description = "Restaurante deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrado")
     })
     ResponseEntity<?> excluirRestaurante(@PathVariable Long id, HttpServletRequest request);

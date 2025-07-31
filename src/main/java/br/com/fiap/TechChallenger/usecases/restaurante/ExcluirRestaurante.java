@@ -21,7 +21,7 @@ public class ExcluirRestaurante {
             autenticacao.getUsuarioLogado(request);
             restauranteRepository.findById(id).orElseThrow(() -> new RuntimeException("Restaurante não encontrado"));
             restauranteRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
