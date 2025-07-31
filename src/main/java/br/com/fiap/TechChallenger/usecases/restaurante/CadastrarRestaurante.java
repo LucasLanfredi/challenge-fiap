@@ -49,7 +49,7 @@ public class CadastrarRestaurante {
 
     }
 
-    private Usuario converteUsuario(final UsuarioEditDTO donoDoRestaurante) {
+    private Usuario converteUsuario(final UsuarioDTO donoDoRestaurante) {
         return Usuario.builder()
                 .nome(donoDoRestaurante.getNome())
                 .email(donoDoRestaurante.getEmail())

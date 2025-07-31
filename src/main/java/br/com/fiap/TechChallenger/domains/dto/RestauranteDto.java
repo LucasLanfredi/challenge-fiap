@@ -22,6 +22,6 @@ public class RestauranteDto {
     private HorariosDeFuncionamentoDTO horariosDeFuncionamentoDTO;
 
     @NotBlank(message = "Os dados do dono do restaurante são obrigatórios")
-    private UsuarioEditDTO DonoDoRestaurante;
+    private UsuarioDTO DonoDoRestaurante;
 
 }
