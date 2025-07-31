@@ -38,6 +38,16 @@ public class EnderecoHelper {
                 .build();
     }
 
+    public static EnderecoDTO gerarEnderecoDTO(Endereco endereco) {
+        return EnderecoDTO.builder()
+                .estado(endereco.getEstado())
+                .cidade(endereco.getCidade())
+                .rua(endereco.getRua())
+                .numero(endereco.getNumero())
+                .cep(endereco.getCep())
+                .build();
+    }
+
     public static EnderecoEditDTO gerarEnderecoEditDTO() {
         return EnderecoEditDTO.builder()
                 .enderecoId(1L)

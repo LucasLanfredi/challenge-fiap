@@ -11,7 +11,7 @@ public class UsuarioHelper {
 
     public static Usuario gerarUsuario() {
 
-        return new Usuario(1L, "João", "joao@email.com", "user", "12345678", false, LocalDateTime.now(), new ArrayList<>(), null);
+        return new Usuario(1L, "João", "joao@email.com", "user", "12345678", false, LocalDateTime.now(), new ArrayList<>(), TipoUsuario.CLIENTE);
     }
 
     public static Usuario gerarUsuario(Long id) {
@@ -32,5 +32,38 @@ public class UsuarioHelper {
         );
     }
 
+    public static Usuario gerarUsuarioDonoDeRestaurante() {
+        return new Usuario(1L, "João", "joao@email.com", "user", "12345678", false, LocalDateTime.now(), new ArrayList<>(), TipoUsuario.DONO_RESTAURANTE);
+    }
 
+    public static UsuarioDTO gerarUsuarioDTO() {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNome("João");
+        usuarioDTO.setEmail("joao@email.com");
+        usuarioDTO.setLogin("joao");
+        usuarioDTO.setSenha("12345678");
+        usuarioDTO.setTipoUsuario(TipoUsuario.CLIENTE);
+        return usuarioDTO;
+    }
+
+    public static UsuarioDTO gerarUsuarioDTO(Usuario usuario) {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNome(usuario.getNome());
+        usuarioDTO.setEmail(usuario.getEmail());
+        usuarioDTO.setLogin(usuario.getLogin());
+        usuarioDTO.setSenha(usuario.getSenha());
+        usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
+        return usuarioDTO;
+    }
+
+    public static UsuarioDTO gerarUsuarioDTODonoDeRestaurante() {
+        UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setNome("João");
+        usuarioDTO.setEmail("joao@email.com");
+        usuarioDTO.setLogin("joao");
+        usuarioDTO.setSenha("12345678");
+        usuarioDTO.setTipoUsuario(TipoUsuario.DONO_RESTAURANTE);
+        return usuarioDTO;
+
+    }
 }
