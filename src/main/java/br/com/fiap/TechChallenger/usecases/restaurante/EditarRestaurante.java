@@ -1,6 +1,8 @@
 package br.com.fiap.TechChallenger.usecases.restaurante;
 
 import br.com.fiap.TechChallenger.domains.*;
+import br.com.fiap.TechChallenger.domains.dto.HorariosDeFuncionamentoDTO;
+import br.com.fiap.TechChallenger.domains.dto.HorariosDto;
 import br.com.fiap.TechChallenger.domains.dto.RestauranteDto;
 import br.com.fiap.TechChallenger.domains.dto.response.RestauranteResponse;
 import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
@@ -30,7 +32,7 @@ public class EditarRestaurante {
             if (!restauranteDto.getDonoDoRestaurante().getTipoUsuario().equals(TipoUsuario.DONO_RESTAURANTE))
                 throw new TipoUsuarioInvalidoException("Tipo de usuário inválido para alteração de cadastro");
 
-           Restaurante restauranteAtualizado = updateRestauranteFromDto(restauranteDto);
+           Restaurante restauranteAtualizado = mapearAtualizacao(restauranteDto);
            restauranteRepository.save(restauranteAtualizado);
            return ResponseEntity.status(HttpStatus.OK).body(RestauranteResponse.converte(restauranteAtualizado));
 
@@ -39,31 +41,28 @@ public class EditarRestaurante {
         }
     }
 
-    private Restaurante updateRestauranteFromDto(final RestauranteDto restauranteDto) {
+    private Restaurante mapearAtualizacao(final RestauranteDto dto) {
         return Restaurante.builder()
-                .nome(restauranteDto.getNome() != null ? restauranteDto.getNome() : null)
-                .tipoDeCozinha(restauranteDto.getTipoDeCozinha() != null ? restauranteDto.getTipoDeCozinha() : null)
-                .horarioDeFuncionamento(HorariosDeFuncionamento.builder()
-                        .diasUteis(Horarios.builder()
-                                .abertura(restauranteDto.getHorariosDeFuncionamentoDTO().getDiasUteis().getAbertura() != null ?
-                                        restauranteDto.getHorariosDeFuncionamentoDTO().getDiasUteis().getAbertura() : null)
-                                .fechamento(restauranteDto.getHorariosDeFuncionamentoDTO().getDiasUteis().getFechamento() != null ?
-                                        restauranteDto.getHorariosDeFuncionamentoDTO().getDiasUteis().getFechamento() : null)
-                                .build())
-                        .sabado(Horarios.builder()
-                                .abertura(restauranteDto.getHorariosDeFuncionamentoDTO().getSabado().getAbertura() != null ?
-                                        restauranteDto.getHorariosDeFuncionamentoDTO().getSabado().getAbertura() : null)
-                                .fechamento(restauranteDto.getHorariosDeFuncionamentoDTO().getSabado().getFechamento() != null ?
-                                        restauranteDto.getHorariosDeFuncionamentoDTO().getSabado().getFechamento() : null)
-                                .build())
-                        .domingoEFeriado(Horarios.builder()
-                                .abertura(restauranteDto.getHorariosDeFuncionamentoDTO().getDomingoEFeriado().getAbertura() != null ?
-                                        restauranteDto.getHorariosDeFuncionamentoDTO().getDomingoEFeriado().getAbertura() : null)
-                                .fechamento(restauranteDto.getHorariosDeFuncionamentoDTO().getDomingoEFeriado().getFechamento() != null ?
-                                        restauranteDto.getHorariosDeFuncionamentoDTO().getDomingoEFeriado().getFechamento(): null)
-                                .build())
-                        .build())
+                .nome(dto.getNome())
+                .tipoDeCozinha(dto.getTipoDeCozinha())
+                .horarioDeFuncionamento(mapearHorarios(dto.getHorariosDeFuncionamentoDTO()))
                 .build();
+    }
 
+    private HorariosDeFuncionamento mapearHorarios(HorariosDeFuncionamentoDTO dto) {
+        return HorariosDeFuncionamento.builder()
+                .diasUteis(mapearHorario(dto.getDiasUteis()))
+                .sabado(mapearHorario(dto.getSabado()))
+                .domingoEFeriado(mapearHorario(dto.getDomingoEFeriado()))
+                .build();
+    }
+
+    private Horarios mapearHorario(HorariosDto dto) {
+        if (dto == null)
+            return null;
+        return Horarios.builder()
+                .abertura(dto.getAbertura())
+                .fechamento(dto.getFechamento())
+                .build();
     }
 }
