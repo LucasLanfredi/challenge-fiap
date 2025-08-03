@@ -3,6 +3,7 @@ package br.com.fiap.TechChallenger.usecases.restaurante;
 import br.com.fiap.TechChallenger.domains.Endereco;
 import br.com.fiap.TechChallenger.domains.Restaurante;
 import br.com.fiap.TechChallenger.domains.Usuario;
+import br.com.fiap.TechChallenger.domains.dto.HorariosDeFuncionamentoDTO;
 import br.com.fiap.TechChallenger.domains.dto.RestauranteDto;
 import br.com.fiap.TechChallenger.domains.dto.UsuarioDTO;
 import br.com.fiap.TechChallenger.domains.dto.UsuarioLogado;
@@ -84,6 +85,41 @@ public class EditarRestauranteTest {
                     .isNotNull()
                     .extracting(RestauranteResponse::tipoDeCozinha)
                     .isEqualTo("Indiana");
+
+            verify(restauranteRepository, times(1)).save(any());
+            verify(restauranteRepository, times(1)).findById(id);
+            verify(autenticacao, times(1)).getUsuarioLogado(request);
+        }
+
+        @Test
+        void deveEditarRestauranteComSucessoECamposVazio() throws AuthException {
+
+            var request = mock(HttpServletRequest.class);
+            Long id = 1L;
+            Endereco endereco = gerarEndereco();
+            Usuario usuario = gerarUsuarioDonoDeRestaurante();
+            UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuario);
+            UsuarioDTO usuarioDTO = gerarUsuarioDTO(usuario);
+            var restauranteExistente = gerarRestaurante(endereco, usuario);
+            RestauranteDto restauranteDto = new RestauranteDto();
+            restauranteDto.setDonoDoRestaurante(usuarioDTO);
+            restauranteDto.setHorariosDeFuncionamentoDTO(new HorariosDeFuncionamentoDTO());
+
+            when(restauranteRepository.findById(id))
+                    .thenReturn(Optional.of(restauranteExistente));
+            when(restauranteRepository.save(any()))
+                    .thenReturn(restauranteExistente);
+            when(autenticacao.getUsuarioLogado(request))
+                    .thenReturn(usuarioLogado);
+
+            ResponseEntity<RestauranteResponse> response = (ResponseEntity<RestauranteResponse>) usecase.execute(restauranteDto, request, id);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+            assertThat(response.getBody())
+                    .isNotNull()
+                    .extracting(RestauranteResponse::tipoDeCozinha)
+                    .isEqualTo(null);
 
             verify(restauranteRepository, times(1)).save(any());
             verify(restauranteRepository, times(1)).findById(id);

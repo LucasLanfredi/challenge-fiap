@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.context.annotation.Profile;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Profile("teste")
@@ -199,6 +202,37 @@ public class UsuarioControllerTest {
                             .characterEncoding("UTF-8")
                             .content(asJsonString(criarUsuarioRequest)))
                     .andExpect(status().isOk());
+
+            // Then
+            verify(criarUsuario, times(1)).criar(criarUsuarioRequest);
+        }
+
+        @Test
+        void deveRetornarBadRequestAoCriarUsuarioComDadosInvalidos() throws Exception {
+            // Given
+            MockHttpServletRequest request = new MockHttpServletRequest();
+            request.setMethod("POST");
+
+            UsuarioDTO criarUsuarioRequest = new UsuarioDTO();
+            criarUsuarioRequest.setNome("John Doe");
+            criarUsuarioRequest.setEmail("john@email");
+            criarUsuarioRequest.setLogin("loginJohn");
+            criarUsuarioRequest.setSenha("senhaJohn");
+            criarUsuarioRequest.setEndereco(new ArrayList<>());
+            criarUsuarioRequest.setTipoUsuario(TipoUsuario.DONO_RESTAURANTE);
+
+            when(criarUsuario.criar(criarUsuarioRequest)).thenThrow(new DataIntegrityViolationException("EMAIL já cadastrado"));
+
+            mockMvc.perform(post("/usuario")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .characterEncoding("UTF-8")
+                            .content(asJsonString(criarUsuarioRequest)))
+                    .andDo(print())
+                    .andExpect(status().isUnprocessableEntity())
+                    .andExpect(jsonPath("$.error").value("Violação de integridade"))
+                    .andExpect(jsonPath("$.listaErrosValidacao[0].mensagemErroValidacao")
+                            .value("Já existe um usuário cadastrado com este e-mail."));
+
 
             // Then
             verify(criarUsuario, times(1)).criar(criarUsuarioRequest);
