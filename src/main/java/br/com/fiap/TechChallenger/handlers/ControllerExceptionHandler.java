@@ -1,6 +1,8 @@
 package br.com.fiap.TechChallenger.handlers;
 
 import br.com.fiap.TechChallenger.domains.dto.ErroCustomizado;
+import br.com.fiap.TechChallenger.usecases.exception.RecursoNaoEncontradoException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -15,8 +17,11 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErroCustomizado> erroValidacao(MethodArgumentNotValidException e, HttpServletRequest request){
+    public ResponseEntity<ErroCustomizado> handleErroValidacao(
+            MethodArgumentNotValidException e,
+            HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
         ErroCustomizado erro = new ErroCustomizado(
                 Instant.now(),
@@ -51,6 +56,23 @@ public class ControllerExceptionHandler {
         } else {
             erro.addErroValidacao("dados", "Violação de restrição de integridade.");
         }
+
+        return ResponseEntity.status(status).body(erro);
+    }
+
+
+    @ExceptionHandler(RecursoNaoEncontradoException.class)
+    public ResponseEntity<ErroCustomizado> handleNotFound(
+        RecursoNaoEncontradoException e,
+        HttpServletRequest request) {
+
+        HttpStatus status  = HttpStatus.NOT_FOUND;
+        ErroCustomizado erro = new ErroCustomizado(
+                Instant.now(),
+                status.value(),
+                "Recurso não encontrado: " + e.getMessage(),
+                request.getRequestURI()
+        );
 
         return ResponseEntity.status(status).body(erro);
     }
