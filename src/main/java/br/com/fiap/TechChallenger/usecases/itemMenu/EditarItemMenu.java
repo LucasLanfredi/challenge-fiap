@@ -21,17 +21,10 @@ import java.util.Set;
 public class EditarItemMenu {
 
     private final ItemMenuRepository itemMenuRepository;
-    private final Autenticacao autenticacao;
 
-    public ResponseEntity<ItemMenuResponse> editar(Long id, ItemMenuDTO dto, HttpServletRequest request) {
+    public ResponseEntity<ItemMenuResponse> editar(Long id, ItemMenuDTO dto) {
 
         try {
-            UsuarioLogado usuarioLogado = autenticacao.getUsuarioLogado(request);
-            String perfil = usuarioLogado.getPerfil();
-
-            if (!"DONO_RESTAURANTE".equalsIgnoreCase(perfil)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
 
             ItemMenu itemMenu = itemMenuRepository.findById(id)
                     .orElseThrow(() -> new RecursoNaoEncontradoException(

@@ -28,10 +28,9 @@ import static br.com.fiap.TechChallenger.domains.TipoUsuario.DONO_RESTAURANTE;
 public class CriarItemMenu {
 
     private final ItemMenuRepository itemMenuRepository;
-    private final Autenticacao autenticacao;
     private final RestauranteRepository restauranteRepository;
 
-    public ResponseEntity<ItemMenuResponse> criar(final ItemMenuDTO dto, final HttpServletRequest request){
+    public ResponseEntity<ItemMenuResponse> criar(final ItemMenuDTO dto){
 
         try{
             Restaurante restaurante = restauranteRepository.findById(dto.getIdRestaurante())
