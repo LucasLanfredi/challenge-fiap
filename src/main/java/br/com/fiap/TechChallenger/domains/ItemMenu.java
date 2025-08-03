@@ -49,6 +49,10 @@ public class ItemMenu {
     @Setter
     private Set<Alergeno> alergenos;
 
+    @ManyToOne()
+    @JoinColumn(name = "id_restaurante", nullable = false)
+    private Restaurante restaurante;
+
     private boolean disponivel = true;
 
     //private Restaurante restaurante;

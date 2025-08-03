@@ -1,6 +1,7 @@
 package br.com.fiap.TechChallenger.domains.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,7 +17,8 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Representa um endereço do usuário")
 public class EnderecoEditDTO {
 
-    @Schema(description = "Id do endereço")
+    @Schema(description = "Id do endereço", example = "1")
+    @NotNull
     private Long enderecoId;
 
     @Schema(description = "Rua", example = "Rua das rosas")

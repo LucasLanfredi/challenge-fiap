@@ -1,14 +1,12 @@
 package br.com.fiap.TechChallenger.usecases.restaurante;
 
 import br.com.fiap.TechChallenger.domains.Endereco;
-import br.com.fiap.TechChallenger.domains.Restaurante;
+import br.com.fiap.TechChallenger.domains.ItemMenu;
 import br.com.fiap.TechChallenger.domains.Usuario;
-import br.com.fiap.TechChallenger.domains.dto.HorariosDeFuncionamentoDTO;
-import br.com.fiap.TechChallenger.domains.dto.RestauranteDto;
-import br.com.fiap.TechChallenger.domains.dto.UsuarioDTO;
-import br.com.fiap.TechChallenger.domains.dto.UsuarioLogado;
+import br.com.fiap.TechChallenger.domains.dto.*;
 import br.com.fiap.TechChallenger.domains.dto.response.RestauranteResponse;
 import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
+import br.com.fiap.TechChallenger.gateways.repository.UsuarioRepository;
 import br.com.fiap.TechChallenger.usecases.security.Autenticacao;
 import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,15 +16,17 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.fiap.TechChallenger.helpers.EnderecoHelper.gerarEndereco;
-import static br.com.fiap.TechChallenger.helpers.RestauranteHelper.gerarRestaurante;
-import static br.com.fiap.TechChallenger.helpers.RestauranteHelper.gerarRestauranteDto;
+import static br.com.fiap.TechChallenger.helpers.RestauranteHelper.*;
 import static br.com.fiap.TechChallenger.helpers.UsuarioHelper.*;
 import static br.com.fiap.TechChallenger.helpers.UsuarioLogadoHelper.gerarUsuarioLogado;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -41,6 +41,9 @@ public class EditarRestauranteTest {
     @Mock
     private Autenticacao autenticacao;
 
+    @Mock
+    private UsuarioRepository usuarioRepository;
+
     private EditarRestaurante usecase;
 
     AutoCloseable mock;
@@ -48,7 +51,7 @@ public class EditarRestauranteTest {
     @BeforeEach
     void setup() {
         mock = MockitoAnnotations.openMocks(this);
-        usecase = new EditarRestaurante(autenticacao, restauranteRepository);
+        usecase = new EditarRestaurante(autenticacao, restauranteRepository, usuarioRepository, new ModelMapper());
     }
 
     @AfterEach
@@ -65,10 +68,11 @@ public class EditarRestauranteTest {
             Long id = 1L;
             Endereco endereco = gerarEndereco();
             Usuario usuario = gerarUsuarioDonoDeRestaurante();
+            List<ItemMenu> itensMenu = new ArrayList<>();
             UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuario);
-            var restauranteExistente = gerarRestaurante(endereco, usuario);
-            var restauranteAtualizado = gerarRestaurante(endereco, usuario, "Indiana");
-            RestauranteDto restauranteDto = gerarRestauranteDto(restauranteAtualizado);
+            var restauranteExistente = gerarRestaurante(endereco, usuario, itensMenu);
+            var restauranteAtualizado = gerarRestaurante(endereco, usuario, itensMenu);
+            RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto(usuario);
 
             when(restauranteRepository.findById(id))
                     .thenReturn(Optional.of(restauranteExistente));
@@ -77,7 +81,8 @@ public class EditarRestauranteTest {
             when(autenticacao.getUsuarioLogado(request))
                     .thenReturn(usuarioLogado);
 
-            ResponseEntity<RestauranteResponse> response = (ResponseEntity<RestauranteResponse>) usecase.execute(restauranteDto, request, id);
+            ResponseEntity<RestauranteResponse> response =
+                    (ResponseEntity<RestauranteResponse>) usecase.execute(restauranteDto, request, id);
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -98,12 +103,10 @@ public class EditarRestauranteTest {
             Long id = 1L;
             Endereco endereco = gerarEndereco();
             Usuario usuario = gerarUsuarioDonoDeRestaurante();
+            List<ItemMenu> itensMenu = new ArrayList<>();
             UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuario);
-            UsuarioDTO usuarioDTO = gerarUsuarioDTO(usuario);
-            var restauranteExistente = gerarRestaurante(endereco, usuario);
-            RestauranteDto restauranteDto = new RestauranteDto();
-            restauranteDto.setDonoDoRestaurante(usuarioDTO);
-            restauranteDto.setHorariosDeFuncionamentoDTO(new HorariosDeFuncionamentoDTO());
+            var restauranteExistente = gerarRestaurante(endereco, usuario, itensMenu);
+            RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto(usuario);
 
             when(restauranteRepository.findById(id))
                     .thenReturn(Optional.of(restauranteExistente));
@@ -112,7 +115,8 @@ public class EditarRestauranteTest {
             when(autenticacao.getUsuarioLogado(request))
                     .thenReturn(usuarioLogado);
 
-            ResponseEntity<RestauranteResponse> response = (ResponseEntity<RestauranteResponse>) usecase.execute(restauranteDto, request, id);
+            ResponseEntity<RestauranteResponse> response =
+                    (ResponseEntity<RestauranteResponse>) usecase.execute(restauranteDto, request, id);
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -130,7 +134,7 @@ public class EditarRestauranteTest {
         void deveLancarExcecaoQuandoRestauranteNaoEncontrado() throws AuthException {
             var request = mock(HttpServletRequest.class);
             Long id = 1L;
-            RestauranteDto restauranteDto = gerarRestauranteDto();
+            RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto();
 
             when(restauranteRepository.findById(id))
                     .thenReturn(Optional.empty());
@@ -149,12 +153,12 @@ public class EditarRestauranteTest {
             var request = mock(HttpServletRequest.class);
             Long id = 1L;
             Usuario usuario = gerarUsuario();
-            UsuarioDTO usuarioDTO = gerarUsuarioDTO(usuario);
             UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuario);
-            RestauranteDto restauranteDto = gerarRestauranteDto(usuarioDTO);
+            RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto(usuario);
+            List<ItemMenu> itensMenu = new ArrayList<>();
 
             when(restauranteRepository.findById(id))
-                    .thenReturn(Optional.of(gerarRestaurante(gerarEndereco(), usuario)));
+                    .thenReturn(Optional.of(gerarRestaurante(gerarEndereco(), usuario, itensMenu)));
             when(autenticacao.getUsuarioLogado(request))
                     .thenReturn(usuarioLogado);
 

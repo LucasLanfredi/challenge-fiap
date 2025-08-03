@@ -1,12 +1,15 @@
 package br.com.fiap.TechChallenger.usecases.itemMenu;
 
-import br.com.fiap.TechChallenger.domains.Alergeno;
 import br.com.fiap.TechChallenger.domains.ItemMenu;
+import br.com.fiap.TechChallenger.domains.Restaurante;
 import br.com.fiap.TechChallenger.domains.TipoUsuario;
 import br.com.fiap.TechChallenger.domains.dto.ItemMenuDTO;
 import br.com.fiap.TechChallenger.domains.dto.UsuarioLogado;
 import br.com.fiap.TechChallenger.domains.dto.response.ItemMenuResponse;
 import br.com.fiap.TechChallenger.gateways.repository.ItemMenuRepository;
+import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
+import br.com.fiap.TechChallenger.usecases.exception.TipoUsuarioInvalidoException;
+import br.com.fiap.TechChallenger.usecases.exception.UsuarioNaoEncontradoException;
 import br.com.fiap.TechChallenger.usecases.security.Autenticacao;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -18,23 +21,21 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import static br.com.fiap.TechChallenger.domains.TipoUsuario.DONO_RESTAURANTE;
+
 @Service
 @AllArgsConstructor
 public class CriarItemMenu {
 
     private final ItemMenuRepository itemMenuRepository;
     private final Autenticacao autenticacao;
+    private final RestauranteRepository restauranteRepository;
 
     public ResponseEntity<ItemMenuResponse> criar(final ItemMenuDTO dto, final HttpServletRequest request){
 
         try{
-
-            UsuarioLogado usuarioLogado = autenticacao.getUsuarioLogado(request);
-            String perfil = usuarioLogado.getPerfil();
-
-            if (!"DONO_RESTAURANTE".equalsIgnoreCase(perfil)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
+            Restaurante restaurante = restauranteRepository.findById(dto.getIdRestaurante())
+                    .orElseThrow(() -> new RuntimeException("Restaurante não encontrado"));;
 
             final ItemMenu item = ItemMenu.builder()
                     .nomePrato(dto.getNomePrato())
@@ -44,11 +45,11 @@ public class CriarItemMenu {
                     .ingredientes(new HashSet<>(dto.getIngredientes()))
                     .alergenos(new HashSet<>(Optional.ofNullable(dto.getAlergenos()).orElse(Set.of())))
                     .disponivel(dto.isDisponivel())
+                    .restaurante(restaurante)
                     .build();
 
-            itemMenuRepository.save(item);
-
-            ItemMenuResponse response = ItemMenuResponse.fromEntity(item);
+            ItemMenu novoMenu = itemMenuRepository.save(item);
+            ItemMenuResponse response = ItemMenuResponse.fromEntity(novoMenu);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)

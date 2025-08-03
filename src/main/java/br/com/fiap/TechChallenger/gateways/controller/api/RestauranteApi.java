@@ -1,6 +1,7 @@
 package br.com.fiap.TechChallenger.gateways.controller.api;
 
 import br.com.fiap.TechChallenger.domains.dto.RestauranteDto;
+import br.com.fiap.TechChallenger.domains.dto.RestauranteRequestEditDto;
 import br.com.fiap.TechChallenger.domains.dto.response.RestauranteResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -56,7 +57,7 @@ public interface RestauranteApi {
     ResponseEntity<?> editarRestaurante(
             @RequestBody(description = "Dados para edição do restaurante", required = true,
                     content = @Content(schema = @Schema(implementation = RestauranteDto.class)))
-            @Valid RestauranteDto restauranteDto, HttpServletRequest request,
+            @Valid RestauranteRequestEditDto restauranteDto, HttpServletRequest request,
             @PathVariable Long id);
 
     @Operation(summary = "Excluir restaurante cadastrado", description = "Exclui um restaurante cadastrado através do seu id")

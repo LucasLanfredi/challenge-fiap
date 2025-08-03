@@ -7,19 +7,11 @@ import br.com.fiap.TechChallenger.domains.dto.UsuarioDTO;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class UsuarioHelper {
+public class ItensMenuHelper {
 
     public static Usuario gerarUsuario() {
-        return new Usuario(1L,
-                "João",
-                "joao@email.com",
-                "user",
-                "12345678",
-                false,
-                LocalDateTime.now(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                TipoUsuario.CLIENTE);
+        return new Usuario();
+//        return new Usuario(1L, "João", "joao@email.com", "user", "12345678", false, LocalDateTime.now(), new ArrayList<>(), TipoUsuario.CLIENTE);
     }
 
     public static Usuario gerarUsuario(Long id) {

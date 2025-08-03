@@ -40,5 +40,8 @@ public class ItemMenuDTO {
     @Schema(description = "Indica se o prato está disponível para pedidos", example = "true")
     private boolean disponivel;
 
-    //private RestauranteDto restaurante;
+    @NotNull(message = "Restaurante é obrigatorio")
+    @Schema(description = "Restaurante que apresentará esse item", example = "1")
+    private Long idRestaurante;
+
 }

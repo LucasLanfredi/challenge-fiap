@@ -3,7 +3,9 @@ package br.com.fiap.TechChallenger.usecases.restaurante;
 import br.com.fiap.TechChallenger.domains.*;
 import br.com.fiap.TechChallenger.domains.dto.*;
 import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
+import br.com.fiap.TechChallenger.gateways.repository.UsuarioRepository;
 import br.com.fiap.TechChallenger.usecases.exception.TipoUsuarioInvalidoException;
+import br.com.fiap.TechChallenger.usecases.exception.UsuarioNaoEncontradoException;
 import br.com.fiap.TechChallenger.usecases.security.Autenticacao;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ public class CadastrarRestaurante {
 
     private final Autenticacao autenticacao;
     private final RestauranteRepository restauranteRepository;
+    private final UsuarioRepository usuarioRepository;
 
     public ResponseEntity<?> execute(final RestauranteDto restauranteDto, HttpServletRequest request) {
 
@@ -28,14 +31,20 @@ public class CadastrarRestaurante {
         }
     }
 
-    public ResponseEntity<?> cadastrarRestaurante(final RestauranteDto restauranteDto) {
+    public ResponseEntity<?> cadastrarRestaurante(final RestauranteDto restauranteDto) throws TipoUsuarioInvalidoException {
+        Usuario dono = usuarioRepository.findById(restauranteDto.getDonoRestauranteId())
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário dono não encontrado"));
+
+        if (!dono.getTipoUsuario().equals(TipoUsuario.DONO_RESTAURANTE)) {
+            throw new TipoUsuarioInvalidoException("Tipo de usuário inválido para cadastro de restaurante");
+        }
 
         final Restaurante entidadeRestaurante = Restaurante.builder()
                 .nome(restauranteDto.getNome())
                 .endereco(converteEndereco(restauranteDto.getEnderecoDTO()))
                 .tipoDeCozinha(restauranteDto.getTipoDeCozinha())
                 .horarioDeFuncionamento(converteDias(restauranteDto.getHorariosDeFuncionamentoDTO()))
-                .DonoDoRestaurante(converteUsuario(restauranteDto.getDonoDoRestaurante()))
+                .donoDoRestaurante(dono)
                 .build();
         try {
             if (!entidadeRestaurante.getDonoDoRestaurante().getTipoUsuario().equals(TipoUsuario.DONO_RESTAURANTE))

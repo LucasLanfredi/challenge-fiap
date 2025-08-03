@@ -32,4 +32,7 @@ public class Endereco {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToOne(mappedBy = "endereco")
+    private Restaurante restaurante;
 }

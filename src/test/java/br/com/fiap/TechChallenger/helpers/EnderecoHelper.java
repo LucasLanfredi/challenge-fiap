@@ -25,7 +25,8 @@ public class EnderecoHelper {
                 "SP",
                 "123",
                 "0000-000",
-                usuario);
+                usuario,
+                null);
     }
 
     public static EnderecoDTO gerarEnderecoDTO() {

@@ -4,23 +4,25 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class HorariosDeFuncionamento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idHorariosDeFuncionamento;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Horarios diasUteis;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Horarios sabado;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Horarios domingoEFeriado;
 }

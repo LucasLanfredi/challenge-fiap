@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
@@ -32,10 +33,10 @@ public class UsuarioDTO {
             example = "abc123"
     )
     @NotBlank(message = "A senha é obrigatória.")
-//    @Pattern(
-//            regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{6}$",
-//            message = "A senha deve ter 6 caracteres com letra e número, sem símbolos."
-//    )
+    @Pattern(
+            regexp = "^(?=.*[a-zA-Z])(?=.*\\d)[a-zA-Z\\d]{6}$",
+            message = "A senha deve ter 6 caracteres com letra e número, sem símbolos."
+    )
     private String senha;
 
     @Schema(description = "Lista de endereços associados ao usuário")

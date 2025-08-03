@@ -40,7 +40,7 @@ public class TrocarSenha {
                 .login(usuario.getLogin())
                 .senha(passwordEncoder.encode(trocaSenhaDto.getNovaSenha()))
                 .dataUltimaAlteracao(LocalDateTime.now())
-                .endereco(usuario.getEndereco())
+                .enderecos(usuario.getEnderecos())
                 .tipoUsuario(usuario.getTipoUsuario())
                 .build();
         usuarioRepository.save(usuarioEditado);

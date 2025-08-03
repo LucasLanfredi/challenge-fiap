@@ -1,6 +1,7 @@
 package br.com.fiap.TechChallenger.usecases.restaurante;
 
 import br.com.fiap.TechChallenger.domains.Endereco;
+import br.com.fiap.TechChallenger.domains.ItemMenu;
 import br.com.fiap.TechChallenger.domains.Restaurante;
 import br.com.fiap.TechChallenger.domains.Usuario;
 import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
@@ -14,6 +15,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static br.com.fiap.TechChallenger.helpers.EnderecoHelper.gerarEndereco;
@@ -55,7 +58,8 @@ public class ExcluirRestauranteTest {
             Long id = 1L;
             Endereco endereco = gerarEndereco();
             Usuario usuario = gerarUsuarioDonoDeRestaurante();
-            Restaurante restaurante = gerarRestaurante(endereco, usuario);
+            List<ItemMenu> itemMenuList = new ArrayList<>();
+            Restaurante restaurante = gerarRestaurante(endereco, usuario, itemMenuList);
 
             when(restauranteRepository.findById(id))
                 .thenReturn(Optional.of(restaurante));

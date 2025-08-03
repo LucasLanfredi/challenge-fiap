@@ -2,6 +2,7 @@ package br.com.fiap.TechChallenger.usecases.restaurante;
 
 import br.com.fiap.TechChallenger.gateways.repository.RestauranteRepository;
 import br.com.fiap.TechChallenger.usecases.security.Autenticacao;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

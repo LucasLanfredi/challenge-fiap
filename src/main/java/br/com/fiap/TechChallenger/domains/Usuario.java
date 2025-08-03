@@ -35,8 +35,12 @@ public class Usuario {
     @Setter
     private LocalDateTime dataUltimaAlteracao;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Endereco> endereco;
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            fetch = FetchType.EAGER)
+    private List<Endereco> enderecos;
+
+    @OneToMany(mappedBy = "donoDoRestaurante")
+    private List<Restaurante> restaurantes;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;

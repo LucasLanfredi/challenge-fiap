@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BuscarRestaurante {
 
-    private final Autenticacao autenticacao;
     private final RestauranteRepository restauranteRepository;
 
     public ResponseEntity<RestauranteResponse> buscaPorId(Long id) {

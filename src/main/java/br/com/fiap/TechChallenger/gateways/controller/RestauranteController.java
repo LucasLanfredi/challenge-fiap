@@ -1,6 +1,7 @@
 package br.com.fiap.TechChallenger.gateways.controller;
 
 import br.com.fiap.TechChallenger.domains.dto.RestauranteDto;
+import br.com.fiap.TechChallenger.domains.dto.RestauranteRequestEditDto;
 import br.com.fiap.TechChallenger.domains.dto.response.RestauranteResponse;
 import br.com.fiap.TechChallenger.gateways.controller.api.RestauranteApi;
 import br.com.fiap.TechChallenger.usecases.restaurante.BuscarRestaurante;
@@ -50,15 +51,15 @@ public class RestauranteController implements RestauranteApi {
     }
 
     @Override
-    @PutMapping()
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
-    public ResponseEntity<?> editarRestaurante(@Valid @RequestBody RestauranteDto restauranteDto,
+    public ResponseEntity<?> editarRestaurante(@Valid @RequestBody RestauranteRequestEditDto restauranteDto,
                                                final HttpServletRequest request,
                                                @PathVariable Long id) {
         return editarRestaurante.execute(restauranteDto, request, id);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Override
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<?> excluirRestaurante(@PathVariable Long id, final HttpServletRequest request) {
