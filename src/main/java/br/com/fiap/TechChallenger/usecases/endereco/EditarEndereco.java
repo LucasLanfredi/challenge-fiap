@@ -49,7 +49,7 @@ public class EditarEndereco {
         return ResponseEntity.status(HttpStatus.OK).body(EnderecoResponse.fromEntity(endereco));
     }
 
-    public void updateEnderecoFromDto(EnderecoEditDTO dto, Endereco entity) {
+    private void updateEnderecoFromDto(EnderecoEditDTO dto, Endereco entity) {
         if (dto.getRua() != null) {
             entity.setRua(dto.getRua());
         }

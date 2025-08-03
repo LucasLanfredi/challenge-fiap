@@ -1,9 +1,10 @@
-package br.com.fiap.TechChallenger.gateways.controller;
+package br.com.fiap.TechChallenger.handlers;
 
 import br.com.fiap.TechChallenger.domains.dto.ErroCustomizado;
 import br.com.fiap.TechChallenger.usecases.exception.RecursoNaoEncontradoException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -35,9 +36,9 @@ public class ControllerExceptionHandler {
     }
 
 
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class )
+    @ExceptionHandler(DataIntegrityViolationException.class )
     public ResponseEntity<ErroCustomizado> handleJdbcConstraintViolation(
-            SQLIntegrityConstraintViolationException ex,
+            DataIntegrityViolationException ex,
             HttpServletRequest request) {
 
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

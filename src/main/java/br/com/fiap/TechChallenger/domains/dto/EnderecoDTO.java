@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Representa um endereço do usuário")
+@Schema(description = "Representa um endereço")
 public class EnderecoDTO {
 
     @Schema(description = "Rua", example = "Rua das rosas")
@@ -21,12 +21,10 @@ public class EnderecoDTO {
     private String rua;
 
     @Schema(description = "Número", example = "123")
-
     @NotBlank(message = "O número é obrigatório.")
     private String numero;
 
     @Schema(description = "Cidade", example = "São Paulo")
-
     @NotBlank(message = "A cidade é obrigatória.")
     private String cidade;
 
@@ -36,7 +34,6 @@ public class EnderecoDTO {
     private String estado;
 
     @Schema(description = "CEP", example = "01001-000")
-
     @NotBlank(message = "O CEP é obrigatório.")
     @Pattern(regexp = "\\d{8}", message = "O CEP deve conter exatamente 8 dígitos numéricos.")
     private String cep;
