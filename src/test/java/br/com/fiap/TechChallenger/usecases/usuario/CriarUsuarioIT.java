@@ -33,7 +33,7 @@ public class CriarUsuarioIT {
         UsuarioDTO usuarioDTO = new UsuarioDTO();
         usuarioDTO.setNome("João da Silva");
         usuarioDTO.setEmail("joao@email.com");
-        usuarioDTO.setSenha("senha123");
+        usuarioDTO.setSenha("a1b2C3");
         usuarioDTO.setEndereco(new ArrayList<>());
         usuarioDTO.setTipoUsuario(TipoUsuario.CLIENTE);
 

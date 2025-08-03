@@ -190,7 +190,7 @@ public class UsuarioControllerTest {
             criarUsuarioRequest.setNome("John Doe");
             criarUsuarioRequest.setEmail("john@email");
             criarUsuarioRequest.setLogin("loginJohn");
-            criarUsuarioRequest.setSenha("senhaJohn");
+            criarUsuarioRequest.setSenha("a1b2C3");
             criarUsuarioRequest.setEndereco(new ArrayList<>());
             criarUsuarioRequest.setTipoUsuario(TipoUsuario.DONO_RESTAURANTE);
 
@@ -217,7 +217,7 @@ public class UsuarioControllerTest {
             criarUsuarioRequest.setNome("John Doe");
             criarUsuarioRequest.setEmail("john@email");
             criarUsuarioRequest.setLogin("loginJohn");
-            criarUsuarioRequest.setSenha("senhaJohn");
+            criarUsuarioRequest.setSenha("a1b2C3");
             criarUsuarioRequest.setEndereco(new ArrayList<>());
             criarUsuarioRequest.setTipoUsuario(TipoUsuario.DONO_RESTAURANTE);
 
