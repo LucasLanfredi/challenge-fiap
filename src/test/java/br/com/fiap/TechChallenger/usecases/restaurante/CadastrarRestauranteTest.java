@@ -27,16 +27,19 @@ import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Optional;
 
 import static br.com.fiap.TechChallenger.helpers.EnderecoHelper.gerarEndereco;
 import static br.com.fiap.TechChallenger.helpers.RestauranteHelper.gerarRestaurante;
 import static br.com.fiap.TechChallenger.helpers.RestauranteHelper.gerarRestauranteDto;
 import static br.com.fiap.TechChallenger.helpers.UsuarioHelper.gerarUsuario;
+import static br.com.fiap.TechChallenger.helpers.UsuarioHelper.gerarUsuarioDonoDeRestaurante;
 import static br.com.fiap.TechChallenger.helpers.UsuarioLogadoHelper.gerarUsuarioLogado;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 @Profile("profile")
 public class CadastrarRestauranteTest {
@@ -71,12 +74,12 @@ public class CadastrarRestauranteTest {
         @Test
         void devePermitirCadastrarRestaurante() throws TipoUsuarioInvalidoException {
             Endereco endereco = gerarEndereco();
-            Usuario usuario = gerarUsuario();
+            Usuario usuario = gerarUsuarioDonoDeRestaurante();
             List<ItemMenu> itemMenus = new ArrayList<>();
             Restaurante restaurante = gerarRestaurante(endereco, usuario, itemMenus);
             RestauranteDto restauranteDto = gerarRestauranteDto();
 
-
+            when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(usuario));
             when(restauranteRepository.save(any(Restaurante.class))).thenReturn(restaurante);
 
             var response = usecase.cadastrarRestaurante(
@@ -90,15 +93,13 @@ public class CadastrarRestauranteTest {
         }
 
         @Test
-        void deveLancarExcecaoQuandoUsuarioETipoCliente() throws TipoUsuarioInvalidoException {
+        void deveLancarExcecaoQuandoUsuarioETipoCliente() {
             Usuario usuarioDTO = gerarUsuario();
             RestauranteDto restauranteDto = gerarRestauranteDto(usuarioDTO);
-
-            var response = usecase.cadastrarRestaurante(
-                    restauranteDto
-            );
-            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(response.getBody()).isEqualTo("Tipo de usuário inválido para cadastro de restaurante");
+            when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(usuarioDTO));
+            assertThatThrownBy(() ->  usecase.cadastrarRestaurante(restauranteDto))
+                    .isInstanceOf(TipoUsuarioInvalidoException.class)
+                    .hasMessage("Tipo de usuário inválido para cadastro de restaurante");
         }
 
     }
@@ -108,12 +109,14 @@ public class CadastrarRestauranteTest {
         @Test
         void devePermitirCadastrarRestauranteLogado() throws AuthException {
             Endereco endereco = gerarEndereco();
-            Usuario usuario = gerarUsuario();
+            Usuario usuario = gerarUsuarioDonoDeRestaurante();
             List<ItemMenu> itensMenu = new ArrayList<>();
             UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuario);
             Restaurante restaurante = gerarRestaurante(endereco, usuario, itensMenu);
             RestauranteDto restauranteDto = gerarRestauranteDto();
 
+            when(usuarioRepository.findById(any(Long.class))).thenReturn(Optional.of(usuario));
+            when(restauranteRepository.findById(any(Long.class))).thenReturn(Optional.of(restaurante));
             when(autenticacao.getUsuarioLogado(any())).thenReturn(usuarioLogado);
             when(restauranteRepository.save(any(Restaurante.class))).thenReturn(restaurante);
 
@@ -128,7 +131,7 @@ public class CadastrarRestauranteTest {
 
         @Test
         void deveLancarExcecaoQuandoUsuarioETipoClienteLogado() throws AuthException {
-            Usuario usuarioDTO = gerarUsuario();
+            Usuario usuarioDTO = gerarUsuarioDonoDeRestaurante();
             UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuarioDTO);
             RestauranteDto restauranteDto = gerarRestauranteDto(usuarioDTO);
 
@@ -140,7 +143,7 @@ public class CadastrarRestauranteTest {
             );
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(response.getBody()).isEqualTo("Tipo de usuário inválido para cadastro de restaurante");
+            assertThat(response.getBody()).isEqualTo("Usuário dono não encontrado");
         }
 
         @Test
@@ -157,6 +160,27 @@ public class CadastrarRestauranteTest {
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
             assertThat(response.getBody()).isEqualTo("Erro ao obter usuário logado");
+        }
+
+        @Test
+        void deveLancarExcecaoQuandoTipoUsuarioCliente() throws AuthException {
+            Usuario usuarioDTO = gerarUsuario();
+            UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuarioDTO);
+            RestauranteDto restauranteDto = gerarRestauranteDto(usuarioDTO);
+
+            when(usuarioRepository.findById(anyLong())).thenReturn(Optional.of(usuarioDTO));
+            when(autenticacao.getUsuarioLogado(any())).thenReturn(usuarioLogado);
+
+            var response = usecase.execute(
+                    restauranteDto,
+                    null
+            );
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+            assertThat(response.getBody()).isEqualTo("Tipo de usuário inválido para cadastro de restaurante");
+
+            verify(usuarioRepository, times(1)).findById(anyLong());
+            verify(autenticacao, times(1)).getUsuarioLogado(any());
         }
     }
 

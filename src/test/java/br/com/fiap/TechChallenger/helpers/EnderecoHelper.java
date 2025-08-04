@@ -8,12 +8,15 @@ import br.com.fiap.TechChallenger.domains.dto.EnderecoEditDTO;
 public class EnderecoHelper {
 
     public static Endereco gerarEndereco() {
-        Endereco endereco = new Endereco();
-        endereco.setEstado("SP");
-        endereco.setRua("Rua numero 0");
-        endereco.setCidade("Bairro do Bairro");
-        endereco.setNumero("123");
-        endereco.setCep("00000000");
+        Endereco endereco = new Endereco(
+                1L,
+                "São Paulo",
+                "123",
+                "São Paulo",
+                "SP",
+                "00000000",
+                null,
+                null);
         return endereco;
     }
 

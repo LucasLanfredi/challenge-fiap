@@ -22,6 +22,6 @@ VALUES (1, 1, 2, 3), -- id_horarios_de_funcionamento = 1
        (2, 4, 5, 6); -- id_horarios_de_funcionamento = 2
 
 -- Inserindo restaurantes
-INSERT INTO restaurante (id_restaurante, nome, tipo_de_cozinha, usuario_id, endereco_id, horario_de_funcionamento_id_horarios_de_funcionamento)
+INSERT INTO restaurante (restaurante_id, nome, tipo_de_cozinha, usuario_id, endereco_id, horario_de_funcionamento_id_horarios_de_funcionamento)
 VALUES (1, 'Restaurante A', 'Italiana', 2, 1, 1),
        (2, 'Restaurante B', 'Japonesa', 1, 2, 2);

@@ -58,14 +58,6 @@ public class CadastrarRestaurante {
 
     }
 
-    private Usuario converteUsuario(final UsuarioDTO donoDoRestaurante) {
-        return Usuario.builder()
-                .nome(donoDoRestaurante.getNome())
-                .email(donoDoRestaurante.getEmail())
-                .tipoUsuario(donoDoRestaurante.getTipoUsuario())
-                .build();
-    }
-
     private HorariosDeFuncionamento converteDias(final HorariosDeFuncionamentoDTO horariosDeFuncionamentoDTO) {
         return HorariosDeFuncionamento.builder()
                 .diasUteis(converteHorarios(horariosDeFuncionamentoDTO.getDiasUteis()))

@@ -27,20 +27,20 @@ public class ItemMenuLogadoController implements ItemMenuLogadoApi {
     @PostMapping
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<ItemMenuResponse> criar(@Valid @RequestBody ItemMenuDTO dto,  HttpServletRequest request) {
-        return criarItemMenu.criar(dto, request);
+        return criarItemMenu.criar(dto);
     }
 
     @Override
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<ItemMenuResponse> editar(@PathVariable Long id, @Valid @RequestBody ItemMenuDTO dto, HttpServletRequest request) {
-        return editarItemMenu.editar(id, dto, request);
+        return editarItemMenu.editar(id, dto);
     }
 
     @Override
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('DONO_RESTAURANTE') or hasAuthority('ADMINISTRADOR')")
     public ResponseEntity<Void> deletar(@PathVariable Long id,  HttpServletRequest request) {
-        return deletarItemMenu.deletar(id, request);
+        return deletarItemMenu.deletar(id);
     }
 }

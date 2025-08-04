@@ -1,88 +1,39 @@
 package br.com.fiap.TechChallenger.helpers;
 
-import br.com.fiap.TechChallenger.domains.TipoUsuario;
-import br.com.fiap.TechChallenger.domains.Usuario;
-import br.com.fiap.TechChallenger.domains.dto.UsuarioDTO;
+import br.com.fiap.TechChallenger.domains.ItemMenu;
+import br.com.fiap.TechChallenger.domains.Restaurante;
+import br.com.fiap.TechChallenger.domains.dto.ItemMenuDTO;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.HashSet;
+
 
 public class ItensMenuHelper {
 
-    public static Usuario gerarUsuario() {
-        return new Usuario();
-//        return new Usuario(1L, "João", "joao@email.com", "user", "12345678", false, LocalDateTime.now(), new ArrayList<>(), TipoUsuario.CLIENTE);
+    public static ItemMenu gerarItemMenu(Restaurante restaurante) {
+        return ItemMenu.builder()
+                .id(1L)
+                .nomePrato("Item de Menu")
+                .descricaoPrato("Descrição do item de menu")
+                .preco(BigDecimal.valueOf(19.99))
+                .urlImagem("https://example.com/imagem.jpg")
+                .alergenos(new HashSet<>())
+                .disponivel(true)
+                .ingredientes(new HashSet<>())
+                .restaurante(restaurante)
+                .build();
     }
 
-    public static Usuario gerarUsuario(Long id) {
-        return new Usuario(id,
-                "João",
-                "joao@email.com",
-                "user",
-                "12345678",
-                false,
-                LocalDateTime.now(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                TipoUsuario.CLIENTE);
-    }
-
-    public static Usuario gerarUsuario(UsuarioDTO usuarioDTO) {
-        return new Usuario(
-                1L,
-                usuarioDTO.getNome(),
-                usuarioDTO.getEmail(),
-                usuarioDTO.getLogin(),
-                usuarioDTO.getSenha(),
-                false,
-                LocalDateTime.now(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                TipoUsuario.CLIENTE
-        );
-    }
-
-    public static Usuario gerarUsuarioDonoDeRestaurante() {
-        return new Usuario(1L,
-                "João",
-                "joao@email.com",
-                "user",
-                "12345678",
-                false,
-                LocalDateTime.now(),
-                new ArrayList<>(),
-                new ArrayList<>(),
-                TipoUsuario.DONO_RESTAURANTE);
-    }
-
-    public static UsuarioDTO gerarUsuarioDTO() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setNome("João");
-        usuarioDTO.setEmail("joao@email.com");
-        usuarioDTO.setLogin("joao");
-        usuarioDTO.setSenha("12345678");
-        usuarioDTO.setTipoUsuario(TipoUsuario.CLIENTE);
-        return usuarioDTO;
-    }
-
-    public static UsuarioDTO gerarUsuarioDTO(Usuario usuario) {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setNome(usuario.getNome());
-        usuarioDTO.setEmail(usuario.getEmail());
-        usuarioDTO.setLogin(usuario.getLogin());
-        usuarioDTO.setSenha(usuario.getSenha());
-        usuarioDTO.setTipoUsuario(usuario.getTipoUsuario());
-        return usuarioDTO;
-    }
-
-    public static UsuarioDTO gerarUsuarioDTODonoDeRestaurante() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setNome("João");
-        usuarioDTO.setEmail("joao@email.com");
-        usuarioDTO.setLogin("joao");
-        usuarioDTO.setSenha("12345678");
-        usuarioDTO.setTipoUsuario(TipoUsuario.DONO_RESTAURANTE);
-        return usuarioDTO;
-
+    public static ItemMenuDTO gerarItemMenuDTO(ItemMenu itemMenu) {
+        return ItemMenuDTO.builder()
+                .nomePrato(itemMenu.getNomePrato())
+                .descricaoPrato(itemMenu.getDescricaoPrato())
+                .preco(itemMenu.getPreco())
+                .urlImagem(itemMenu.getUrlImagem())
+                .alergenos(itemMenu.getAlergenos())
+                .disponivel(itemMenu.isDisponivel())
+                .ingredientes(itemMenu.getIngredientes())
+                .idRestaurante(1L)
+                .build();
     }
 }

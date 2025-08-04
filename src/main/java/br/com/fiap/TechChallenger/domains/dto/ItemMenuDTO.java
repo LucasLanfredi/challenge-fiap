@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Data
 @Schema(description = "DTO para criação e edição de itens do menu")
+@Builder
 public class ItemMenuDTO {
 
     @Schema(description = "Nome do prato", example = "Spaghetti ao molho de tomate e manjericão")

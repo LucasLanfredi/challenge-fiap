@@ -16,18 +16,10 @@ import org.springframework.stereotype.Service;
 public class DeletarItemMenu {
 
     private final ItemMenuRepository itemMenuRepository;
-    private final Autenticacao autenticacao;
 
-    public ResponseEntity<Void> deletar(Long id, HttpServletRequest request) {
+    public ResponseEntity<Void> deletar(Long id) {
 
         try {
-            UsuarioLogado usuarioLogado = autenticacao.getUsuarioLogado(request);
-            String perfil = usuarioLogado.getPerfil();
-
-            if (!"DONO_RESTAURANTE".equalsIgnoreCase(perfil)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
-
             ItemMenu itemMenu = itemMenuRepository.findById(id)
                     .orElseThrow(() -> new RecursoNaoEncontradoException(
                             "Id " + id + " não foi encontrado."

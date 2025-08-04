@@ -71,9 +71,10 @@ public class EditarRestauranteTest {
             List<ItemMenu> itensMenu = new ArrayList<>();
             UsuarioLogado usuarioLogado = gerarUsuarioLogado(usuario);
             var restauranteExistente = gerarRestaurante(endereco, usuario, itensMenu);
-            var restauranteAtualizado = gerarRestaurante(endereco, usuario, itensMenu);
+            var restauranteAtualizado = gerarRestauranteTipo(endereco, usuario, "Indiana", itensMenu);
             RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto(usuario);
 
+            when(usuarioRepository.findById(id)).thenReturn(Optional.of(usuario));
             when(restauranteRepository.findById(id))
                     .thenReturn(Optional.of(restauranteExistente));
             when(restauranteRepository.save(any()))
@@ -108,6 +109,8 @@ public class EditarRestauranteTest {
             var restauranteExistente = gerarRestaurante(endereco, usuario, itensMenu);
             RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto(usuario);
 
+            when(usuarioRepository.findById(anyLong()))
+                    .thenReturn(Optional.of(usuario));
             when(restauranteRepository.findById(id))
                     .thenReturn(Optional.of(restauranteExistente));
             when(restauranteRepository.save(any()))
@@ -123,7 +126,7 @@ public class EditarRestauranteTest {
             assertThat(response.getBody())
                     .isNotNull()
                     .extracting(RestauranteResponse::tipoDeCozinha)
-                    .isEqualTo(null);
+                    .isEqualTo("Italiana");
 
             verify(restauranteRepository, times(1)).save(any());
             verify(restauranteRepository, times(1)).findById(id);
@@ -157,6 +160,8 @@ public class EditarRestauranteTest {
             RestauranteRequestEditDto restauranteDto = gerarRestauranteRequestEditDto(usuario);
             List<ItemMenu> itensMenu = new ArrayList<>();
 
+            when(usuarioRepository.findById(anyLong()))
+                    .thenReturn(Optional.of(usuario));
             when(restauranteRepository.findById(id))
                     .thenReturn(Optional.of(gerarRestaurante(gerarEndereco(), usuario, itensMenu)));
             when(autenticacao.getUsuarioLogado(request))
