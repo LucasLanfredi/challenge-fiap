@@ -20,7 +20,7 @@ public class Restaurante {
 
     private String nome;
 
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE},
             fetch = FetchType.EAGER, orphanRemoval = false)
     private Endereco endereco;
 
